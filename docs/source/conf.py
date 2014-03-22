@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+from __future__ import print_function
 
 import os
 import boto
@@ -30,8 +31,8 @@ github_project_url = 'https://github.com/boto/boto/'
 
 try:
     release = os.environ.get('SVN_REVISION', 'HEAD')
-    print release
-except Exception, e:
-    print e
+    print(release)
+except Exception as e:
+    print(e)
 
 html_title = "boto v%s" % version

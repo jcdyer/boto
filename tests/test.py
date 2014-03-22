@@ -20,6 +20,7 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
 # IN THE SOFTWARE.
 
+from __future__ import print_function
 import logging
 import sys
 import unittest
@@ -46,7 +47,7 @@ def main():
         # will filter out any test tagged 'notdefault'.
         attribute_args = ['-a', '!notdefault']
     all_args = [__file__] + attribute_args + remaining_args
-    print "nose command:", ' '.join(all_args)
+    print("nose command:", ' '.join(all_args))
     if run(argv=all_args):
         # run will return True is all the tests pass.  We want
         # this to equal a 0 rc

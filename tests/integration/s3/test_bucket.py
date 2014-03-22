@@ -132,9 +132,9 @@ class S3BucketTest (unittest.TestCase):
         self.bucket.delete_tags()
         try:
             self.bucket.get_tags()
-        except S3ResponseError, e:
+        except S3ResponseError as e:
             self.assertEqual(e.code, 'NoSuchTagSet')
-        except Exception, e:
+        except Exception as e:
             self.fail("Wrong exception raised (expected S3ResponseError): %s"
                       % e)
         else:

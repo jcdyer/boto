@@ -169,7 +169,7 @@ class Job(object):
                 data = response.read()
                 expected_tree_hash = response['TreeHash']
                 return data, expected_tree_hash
-            except retry_exceptions, e:
+            except retry_exceptions as e:
                 continue
         else:
             raise DownloadArchiveError("There was an error downloading"

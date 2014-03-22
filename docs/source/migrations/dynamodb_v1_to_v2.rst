@@ -225,7 +225,7 @@ DynamoDB v1::
     ...                     range_key_condition=BEGINS_WITH('DynamoDB'),
     ...                     request_limit=1, max_results=1)
     >>> for item in items:
-    >>>     print item['Body']
+    >>>     print(item['Body'])
 
 DynamoDB v2::
 
@@ -237,7 +237,7 @@ DynamoDB v2::
     ...     limit=1
     ... )
     >>> for item in items:
-    >>>     print item['Body']
+    >>>     print(item['Body'])
 
 
 Scans
@@ -286,7 +286,7 @@ DynamoDB v1::
 
     # (Largely) Raw dictionaries back from DynamoDB.
     >>> for item_dict in response['Responses'][table.name]['Items']:
-    ...     print item_dict['Body']
+    ...     print(item_dict['Body'])
 
 DynamoDB v2::
 
@@ -301,7 +301,7 @@ DynamoDB v2::
     # Lazy requests across pages, if paginated.
     >>> for res in results:
     ...     # You get back actual ``Item`` instances.
-    ...     print item['Body']
+    ...     print(item['Body'])
 
 
 Batch Writes

@@ -290,7 +290,7 @@ class SearchConnection(object):
         r = requests.get(url, params=params)
         try:
             data = json.loads(r.content)
-        except ValueError, e:
+        except ValueError as e:
             if r.status_code == 403:
                 msg = ''
                 import re

@@ -351,7 +351,7 @@ To run a query for last names starting with the letter "D"::
     ... )
 
     >>> for user in names_with_d:
-    ...     print user['first_name']
+    ...     print(user['first_name'])
     'Bob'
     'Jane'
     'John'
@@ -367,7 +367,7 @@ You can also reverse results (``reverse=True``) as well as limiting them
     ... )
 
     >>> for user in rev_with_d:
-    ...     print user['first_name']
+    ...     print(user['first_name'])
     'John'
     'Jane'
 
@@ -383,7 +383,7 @@ fields::
     ... )
 
     >>> for user in recent:
-    ...     print user['first_name']
+    ...     print(user['first_name'])
     'Alice'
     'Jane'
 
@@ -402,7 +402,7 @@ specify a smaller page size via the ``max_page_size`` argument to
 
     # Usage is the same, but now many smaller requests are done.
     >>> for user in recent:
-    ...     print user['first_name']
+    ...     print(user['first_name'])
     'Alice'
     'Jane'
 
@@ -428,7 +428,7 @@ Filtering a scan looks like::
     ... )
 
     >>> for user in recent:
-    ...     print user['first_name']
+    ...     print(user['first_name'])
     'George'
     'John'
 
@@ -444,7 +444,7 @@ Typical use is simply a standard ``for`` to iterate over the results::
 
     >>> result_set = users.scan()
     >>> for user in result_set:
-    ...     print user['first_name']
+    ...     print(user['first_name'])
 
 However, this throws away results as it fetches more data. As a result, you
 can't index it like a ``list``.
@@ -460,7 +460,7 @@ a call to ``list()``. Ex.::
     >>> all_users = list(result_set)
     # Slice it for every other user.
     >>> for user in all_users[::2]:
-    ...     print user['first_name']
+    ...     print(user['first_name'])
 
 .. warning::
 
@@ -598,7 +598,7 @@ Example::
 
     # Now the request is performed, requesting all five in one request.
     >>> for user in many_users:
-    ...     print user['first_name']
+    ...     print(user['first_name'])
     'Alice'
     'Bobby'
     'Fred'

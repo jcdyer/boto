@@ -182,7 +182,7 @@ and TCP. We want the load balancer to span the availability zones
 The load balancer has been created. To see where you can actually connect to
 it, do:
 
->>> print lb.dns_name
+>>> print(lb.dns_name)
 my_elb-123456789.us-east-1.elb.amazonaws.com
 
 You can then CNAME map a better name, i.e. www.MYWEBSITE.com to the

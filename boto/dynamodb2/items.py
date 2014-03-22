@@ -1,3 +1,5 @@
+from __future__ import print_function
+
 from copy import deepcopy
 
 from boto.dynamodb2.types import Dynamizer
@@ -59,7 +61,7 @@ class Item(object):
 
             # Iterate over all the data.
             >>> for field, val in user.items():
-            ...     print "%s: %s" % (field, val)
+            ...     print("%s: %s" % (field, val))
             username: johndoe
             first_name: John
             date_joined: 1248o61592

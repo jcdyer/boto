@@ -1,3 +1,6 @@
+from __future__ import print_function
+
+
 class ResultSet(object):
     """
     A class used to lazily handle page-to-page navigation through a set of
@@ -17,7 +20,7 @@ class ResultSet(object):
         >>> results.to_call(users.query, username__gte='johndoe')
         # Now iterate. When it runs out of results, it'll fetch the next page.
         >>> for res in results:
-        ...     print res['username']
+        ...     print(res['username'])
 
     """
     def __init__(self, max_page_size=None):

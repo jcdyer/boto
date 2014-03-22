@@ -19,6 +19,7 @@
 # WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
 
+from __future__ import print_function
 import argparse # Hence, Python 2.7 is required.
 import sys
 import os.path
@@ -120,7 +121,7 @@ def save_nicknames(nicknames_path = default_nicknames_path):
     if nicknames != original_nicknames:
         with open(nicknames_path, 'w') as o:
             json.dump(nicknames, o, sort_keys = True, indent = 4)
-            print >>o
+            print(file=o)
 
 def parse_duration(s):
     '''Parses durations like "2 d", "48 h", "2880 min",
@@ -256,9 +257,9 @@ def make_hit(title, description, keywords, reward, question_url, question_frame_
         nick = min(available_nicks)
         nicknames[nick] = r[0].HITId
     if interactive:
-        print 'Nickname:', nick
-        print 'HIT ID:', r[0].HITId
-        print 'Preview:', preview_url(r[0])
+        print('Nickname:', nick)
+        print('HIT ID:', r[0].HITId)
+        print('Preview:', preview_url(r[0]))
     else:
         return r[0]
 
@@ -286,31 +287,31 @@ def list_assignments(hit, only_reviewable = False):
         page_size = 100,
         status = 'Submitted' if only_reviewable else None))
     if interactive:
-        print json.dumps(assignments, sort_keys = True, indent = 4)
-        print ' '.join([a['AssignmentId'] for a in assignments])
-        print ' '.join([a['WorkerId'] + ',' + a['AssignmentId'] for a in assignments])
+        print(json.dumps(assignments, sort_keys = True, indent = 4))
+        print(' '.join([a['AssignmentId'] for a in assignments]))
+        print(' '.join([a['WorkerId'] + ',' + a['AssignmentId'] for a in assignments]))
     else:
         return assignments
 
 def grant_bonus(message, amount, pairs):
     for worker, assignment in pairs:
         con.grant_bonus(worker, assignment, con.get_price_as_price(amount), message)
-        if interactive: print 'Bonused', worker
+        if interactive: print('Bonused', worker)
 
 def approve_assignments(message, assignments):
     for a in assignments:
         con.approve_assignment(a, message)
-        if interactive: print 'Approved', a
+        if interactive: print('Approved', a)
 
 def reject_assignments(message, assignments):
     for a in assignments:
         con.reject_assignment(a, message)
-        if interactive: print 'Rejected', a
+        if interactive: print('Rejected', a)
 
 def unreject_assignments(message, assignments):
     for a in assignments:
         con.approve_rejected_assignment(a, message)
-        if interactive: print 'Unrejected', a
+        if interactive: print('Unrejected', a)
 
 def notify_workers(subject, text, workers):
     con.notify_workers(workers, subject, text)
@@ -456,10 +457,10 @@ if __name__ == '__main__':
     try:
         x = doit()
     except boto.mturk.connection.MTurkRequestError as e:
-        print 'MTurk error:', e.error_message
+        print('MTurk error:', e.error_message)
         sys.exit(1)
 
     if x is not None:
-        print x
+        print(x)
 
     save_nicknames()

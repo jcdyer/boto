@@ -69,9 +69,9 @@ Before workflows and activities can be used, they have to be registered with SWF
     for swf_entity in registerables:
         try:
             swf_entity.register()
-            print swf_entity.name, 'registered successfully'
+            print(swf_entity.name, 'registered successfully')
         except (SWFDomainAlreadyExistsError, SWFTypeAlreadyExistsError):
-            print swf_entity.__class__.__name__, swf_entity.name, 'already exists'
+            print(swf_entity.__class__.__name__, swf_entity.name, 'already exists')
             
     
 Execution of the above should produce no errors.
@@ -159,7 +159,7 @@ The activity worker is responsible for printing the greeting message when the ac
         def run(self):
             activity_task = self.poll()
             if 'activityId' in activity_task:
-                print 'Hello, World!'
+                print('Hello, World!')
                 self.complete()
                 return True
 
@@ -336,9 +336,9 @@ The workers only need to know which task lists to poll.
                 # Get input.
                 # Get the method for the requested activity.
                 try:
-                    print 'working on activity from tasklist %s at %i' % (self.task_list, time.time())
+                    print('working on activity from tasklist %s at %i' % (self.task_list, time.time()))
                     self.activity(activity_task.get('input'))
-                except Exception, error:
+                except Exception as error:
                     self.fail(reason=str(error))
                     raise error
     
@@ -467,7 +467,7 @@ The decider schedules all activities at once and marks progress until all activi
                     # Monitor progress. When all activities complete, complete workflow.
                     completed_count = sum([1 for a in decision_task['events']
                                            if a['eventType'] == 'ActivityTaskCompleted'])
-                    print '%i/%i' % (completed_count, SCHED_COUNT)
+                    print('%i/%i' % (completed_count, SCHED_COUNT))
                     if completed_count == SCHED_COUNT:
                         decisions.complete_workflow_execution()
                 self.complete(decisions=decisions)
@@ -490,7 +490,7 @@ Again, the only bit of information a worker needs is which task list to poll.
             """Report current time."""
             activity_task = self.poll()
             if 'activityId' in activity_task:
-                print 'working on', activity_task['activityId']
+                print('working on', activity_task['activityId'])
                 self.complete(result=str(time.time()))
                 return True
 

@@ -20,6 +20,8 @@
 # WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
 
+from __future__ import print_function
+
 VERSION="0.1"
 usage = """%prog [options]
 Options:
@@ -96,13 +98,13 @@ def list(region, headers, order, completed):
             format_string += "%%-%ds" % HEADERS[h]['length']
 
 
-    print format_string % headers
-    print "-" * len(format_string % headers)
+    print(format_string % headers)
+    print("-" * len(format_string % headers))
                     
     for instance in sorted(events,
                            key=lambda ev: get_column(order, events[ev])):
         e = events[instance]
-        print format_string % tuple(get_column(h, e) for h in headers)
+        print(format_string % tuple(get_column(h, e) for h in headers))
 
 if __name__ == "__main__":
     import boto
@@ -130,7 +132,7 @@ if __name__ == "__main__":
 
     if options.all:
         for r in regions():
-            print "Region %s" % r.name
+            print("Region %s" % r.name)
             list(r, headers, order, options.completed)
     else:
         # Connect the region
@@ -139,7 +141,7 @@ if __name__ == "__main__":
                 region = r
                 break
         else:
-            print "Region %s not found." % options.region
+            print("Region %s not found." % options.region)
             sys.exit(1)
 
         list(r, headers, order, options.completed)

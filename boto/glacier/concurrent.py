@@ -146,7 +146,7 @@ class ConcurrentUploader(ConcurrentTransferer):
         try:
             self._wait_for_upload_threads(hash_chunks, result_queue,
                                           total_parts)
-        except UploadArchiveError, e:
+        except UploadArchiveError as e:
             log.debug("An error occurred while uploading an archive, "
                       "aborting multipart upload.")
             self._api.abort_multipart_upload(self._vault_name, upload_id)
@@ -235,7 +235,7 @@ class UploadWorkerThread(TransferThread):
             try:
                 result = self._upload_chunk(work)
                 break
-            except self._retry_exceptions, e:
+            except self._retry_exceptions as e:
                 log.error("Exception caught uploading part number %s for "
                           "vault %s, attempt: (%s / %s), filename: %s, "
                           "exception: %s, msg: %s",
@@ -306,7 +306,7 @@ class ConcurrentDownloader(ConcurrentTransferer):
         self._start_download_threads(result_queue, worker_queue)
         try:
             self._wait_for_download_threads(filename, result_queue, total_parts)
-        except DownloadArchiveError, e:
+        except DownloadArchiveError as e:
             log.debug("An error occurred while downloading an archive: %s", e)
             raise e
         log.debug("Download completed.")
@@ -397,7 +397,7 @@ class DownloadWorkerThread(TransferThread):
             try:
                 result = self._download_chunk(work)
                 break
-            except self._retry_exceptions, e:
+            except self._retry_exceptions as e:
                 log.error("Exception caught downloading part number %s for "
                           "job %s", work[0], self._job,)
                 time.sleep(self._time_between_retries)

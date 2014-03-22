@@ -247,7 +247,7 @@ class Dynamizer(object):
             if filter(lambda x: x in n, ('Infinity', 'NaN')):
                 raise TypeError('Infinity and NaN not supported')
             return n
-        except (TypeError, DecimalException), e:
+        except (TypeError, DecimalException) as e:
             msg = '{0} numeric for `{1}`\n{2}'.format(
                 e.__class__.__name__, attr, str(e) or '')
         raise DynamoDBNumberError(msg)

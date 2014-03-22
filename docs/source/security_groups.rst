@@ -13,7 +13,7 @@ Amazon defines a security group as:
 To get a listing of all currently defined security groups::
 
     >>> rs = conn.get_all_security_groups()
-    >>> print rs
+    >>> print(rs)
     [SecurityGroup:appserver, SecurityGroup:default, SecurityGroup:vnc, SecurityGroup:webserver]
 
 Each security group can have an arbitrary number of rules which represent

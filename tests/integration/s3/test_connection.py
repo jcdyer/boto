@@ -24,6 +24,7 @@
 Some unit tests for the S3Connection
 """
 
+from __future__ import print_function
 import unittest
 import time
 import os
@@ -39,7 +40,7 @@ class S3ConnectionTest (unittest.TestCase):
     s3 = True
 
     def test_1_basic(self):
-        print '--- running S3Connection tests ---'
+        print('--- running S3Connection tests ---')
         c = S3Connection()
         # create a new, empty bucket
         bucket_name = 'test-%d' % int(time.time())
@@ -205,7 +206,7 @@ class S3ConnectionTest (unittest.TestCase):
         # now delete bucket
         time.sleep(5)
         c.delete_bucket(bucket)
-        print '--- tests completed ---'
+        print('--- tests completed ---')
 
     def test_basic_anon(self):
         auth_con = S3Connection()
@@ -228,7 +229,7 @@ class S3ConnectionTest (unittest.TestCase):
         try:
             iter(anon_bucket.list()).next()
             self.fail("not expecting contents")
-        except S3ResponseError, e:
+        except S3ResponseError as e:
             self.fail("We should have public-read access, but received "
                       "an error: %s" % e)
         except StopIteration:
@@ -241,7 +242,7 @@ class S3ConnectionTest (unittest.TestCase):
         c = S3Connection()
         try:
             c.create_bucket('bad$bucket$name')
-        except S3ResponseError, e:
+        except S3ResponseError as e:
             self.assertEqual(e.error_code, 'InvalidBucketName')
         else:
             self.fail("S3ResponseError not raised.")

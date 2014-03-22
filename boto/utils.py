@@ -39,6 +39,7 @@
 Some handy utility functions used by several classes.
 """
 
+from __future__ import print_function
 import socket
 import urllib
 import urllib2
@@ -219,7 +220,7 @@ def retry_url(url, retry_on_404=True, num_retries=10):
             r = opener.open(req)
             result = r.read()
             return result
-        except urllib2.HTTPError, e:
+        except urllib2.HTTPError as e:
             # in 2.6 you use getcode(), in 2.5 and earlier you use code
             if hasattr(e, 'getcode'):
                 code = e.getcode()
@@ -227,7 +228,7 @@ def retry_url(url, retry_on_404=True, num_retries=10):
                 code = e.code
             if code == 404 and not retry_on_404:
                 return ''
-        except Exception, e:
+        except Exception as e:
             pass
         boto.log.exception('Caught exception reading instance data')
         # If not on the last iteration of the loop then sleep.
@@ -296,14 +297,14 @@ class LazyLoadMetadata(dict):
                             val = val.split('\n')
                         break
 
-                except JSONDecodeError, e:
+                except JSONDecodeError as e:
                     boto.log.debug(
                         "encountered '%s' exception: %s" % (
                             e.__class__.__name__, e))
                     boto.log.debug(
                         'corrupted JSON data found: %s' % val)
 
-                except Exception, e:
+                except Exception as e:
                     boto.log.debug("encountered unretryable" +
                                    " '%s' exception, re-raising" % (
                                        e.__class__.__name__))
@@ -395,7 +396,7 @@ def get_instance_metadata(version='latest', url='http://169.254.169.254',
     try:
         metadata_url = _build_instance_metadata_url(url, version, data)
         return _get_instance_metadata(metadata_url, num_retries=num_retries)
-    except urllib2.URLError, e:
+    except urllib2.URLError as e:
         return None
     finally:
         if timeout is not None:
@@ -423,7 +424,7 @@ def get_instance_identity(version='latest', url='http://169.254.169.254',
             if field:
                 iid[field] = val
         return iid
-    except urllib2.URLError, e:
+    except urllib2.URLError as e:
         return None
     finally:
         if timeout is not None:
@@ -660,7 +661,7 @@ class LRUCache(dict):
     used:
 
     >>> for key in cache:
-    ...     print key
+    ...     print(key)
     D
     A
     C

@@ -20,6 +20,9 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
 # IN THE SOFTWARE.
 #
+
+from __future__ import print_function
+
 if __name__ == "__main__":
     from optparse import OptionParser
     usage = """%prog [options] URI
@@ -40,4 +43,4 @@ The URI can be either an HTTP URL, or "s3://bucket_name/key_name"
     if options.outfile:
         open(options.outfile, "w").write(f.read())
     else:
-        print f.read()
+        print(f.read())

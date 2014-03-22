@@ -163,7 +163,7 @@ code demonstrates how to create a bucket and put an object in that bucket::
     >>> time.sleep(2)
 
     # Retrieve the contents of ``mykey``.
-    >>> print key.get_contents_as_string()
+    >>> print(key.get_contents_as_string())
     'Hello World!'
 
     # Delete the key.

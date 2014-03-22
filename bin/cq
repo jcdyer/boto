@@ -20,13 +20,15 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
 # IN THE SOFTWARE.
 #
+
+from __future__ import print_function
 import getopt, sys
 import boto.sqs
 from boto.sqs.connection import SQSConnection
 from boto.exception import SQSError
 
 def usage():
-    print 'cq [-c] [-q queue_name] [-o output_file] [-t timeout] [-r region]'
+    print('cq [-c] [-q queue_name] [-o output_file] [-t timeout] [-r region]')
   
 def main():
     try:
@@ -58,34 +60,34 @@ def main():
     if region:
         c = boto.sqs.connect_to_region(region)
     if c is None:
-        print 'Invalid region (%s)' % region
+        print('Invalid region (%s)' % region)
         sys.exit(1)
     else:
         c = SQSConnection()
     if queue_name:
         try:
             rs = [c.create_queue(queue_name)]
-        except SQSError, e:
-            print 'An Error Occurred:'
-            print '%s: %s' % (e.status, e.reason)
-            print e.body
+        except SQSError as e:
+            print('An Error Occurred:')
+            print('%s: %s' % (e.status, e.reason))
+            print(e.body)
             sys.exit()
     else:
         try:
             rs = c.get_all_queues()
-        except SQSError, e:
-            print 'An Error Occurred:'
-            print '%s: %s' % (e.status, e.reason)
-            print e.body
+        except SQSError as e:
+            print('An Error Occurred:')
+            print('%s: %s' % (e.status, e.reason))
+            print(e.body)
             sys.exit()
     for q in rs:
         if clear:
             n = q.clear()
-            print 'clearing %d messages from %s' % (n, q.id)
+            print('clearing %d messages from %s' % (n, q.id))
         elif output_file:
             q.dump(output_file)
         else:
-            print q.id, q.count(vtimeout=timeout)
+            print(q.id, q.count(vtimeout=timeout))
 
 if __name__ == "__main__":
     main()

@@ -22,6 +22,9 @@
 #
 # Elastic Load Balancer Tool
 #
+
+from __future__ import print_function
+
 VERSION = "0.2"
 usage = """%prog [options] [command]
 Commands:
@@ -51,15 +54,15 @@ def find_elb(elb, name):
             raise
 
     if len(elbs) < 1:
-        print "No load balancer by the name of %s found" % name
+        print("No load balancer by the name of %s found" % name)
         return None
     elif len(elbs) > 1:
-        print "More than one elb matches %s?" % name
+        print("More than one elb matches %s?" % name)
         return None
 
     # Should not happen
     if name not in elbs[0].name:
-        print "No load balancer by the name of %s found" % name
+        print("No load balancer by the name of %s found" % name)
         return None
 
     return elbs[0]
@@ -67,14 +70,14 @@ def find_elb(elb, name):
 
 def list(elb):
     """List all ELBs"""
-    print "%-20s %s" % ("Name", "DNS Name")
-    print "-" * 80
+    print("%-20s %s" % ("Name", "DNS Name"))
+    print("-" * 80)
     for b in elb.get_all_load_balancers():
-        print "%-20s %s" % (b.name, b.dns_name)
+        print("%-20s %s" % (b.name, b.dns_name))
 
 def check_valid_region(conn, region):
     if conn is None:
-        print 'Invalid region (%s)' % region
+        print('Invalid region (%s)' % region)
         sys.exit(1)
 
 def get(elb, name):
@@ -82,34 +85,34 @@ def get(elb, name):
 
     b = find_elb(elb, name)
     if b:
-        print "=" * 80
-        print "Name: %s" % b.name
-        print "DNS Name: %s" % b.dns_name
+        print("=" * 80)
+        print("Name: %s" % b.name)
+        print("DNS Name: %s" % b.dns_name)
         if b.canonical_hosted_zone_name:
             chzn = b.canonical_hosted_zone_name
-            print "Canonical hosted zone name: %s" % chzn
+            print("Canonical hosted zone name: %s" % chzn)
         if b.canonical_hosted_zone_name_id:
             chznid = b.canonical_hosted_zone_name_id
-            print "Canonical hosted zone name id: %s" % chznid
-        print
+            print("Canonical hosted zone name id: %s" % chznid)
+        print()
 
-        print "Health Check: %s" % b.health_check
-        print
+        print("Health Check: %s" % b.health_check)
+        print()
 
-        print "Listeners"
-        print "---------"
-        print "%-8s %-8s %s" % ("IN", "OUT", "PROTO")
+        print("Listeners")
+        print("---------")
+        print("%-8s %-8s %s" % ("IN", "OUT", "PROTO"))
         for l in b.listeners:
-            print "%-8s %-8s %s" % (l[0], l[1], l[2])
+            print("%-8s %-8s %s" % (l[0], l[1], l[2]))
 
-        print
+        print()
 
-        print "  Zones  "
-        print "---------"
+        print("  Zones  ")
+        print("---------")
         for z in b.availability_zones:
-            print z
+            print(z)
 
-        print
+        print()
 
         # Make map of all instance Id's to Name tags
         import boto
@@ -129,19 +132,19 @@ def get(elb, name):
 
         name_column_width = max([4] + [len(v) for k,v in names.iteritems()]) + 2
 
-        print "Instances"
-        print "---------"
-        print "%-12s %-15s %-*s %s" % ("ID",
+        print("Instances")
+        print("---------")
+        print("%-12s %-15s %-*s %s" % ("ID",
                                        "STATE",
                                        name_column_width, "NAME",
-                                       "DESCRIPTION")
+                                       "DESCRIPTION"))
         for state in instance_health:
-            print "%-12s %-15s %-*s %s" % (state.instance_id,
+            print("%-12s %-15s %-*s %s" % (state.instance_id,
                                            state.state,
                                            name_column_width, names[state.instance_id],
-                                           state.description)
+                                           state.description))
 
-        print
+        print()
 
 
 def create(elb, name, zones, listeners):
@@ -163,7 +166,7 @@ def delete(elb, name):
     b = find_elb(elb, name)
     if b:
         b.delete()
-        print "Load Balancer %s deleted" % name
+        print("Load Balancer %s deleted" % name)
 
 
 def add_instances(elb, name, instances):
@@ -262,7 +265,7 @@ if __name__ == "__main__":
         elb = boto.ec2.elb.connect_to_region(options.region)
         check_valid_region(elb, options.region)
 
-    print "%s" % (elb.region.endpoint)
+    print("%s" % (elb.region.endpoint))
 
     command = args[0].lower()
     if command in ("ls", "list"):
@@ -271,10 +274,10 @@ if __name__ == "__main__":
         get(elb, args[1])
     elif command == "create":
         if not options.listeners:
-            print "-l option required for command create"
+            print("-l option required for command create")
             sys.exit(1)
         if not options.zones:
-            print "-z option required for command create"
+            print("-z option required for command create")
             sys.exit(1)
         create(elb, args[1], options.zones, options.listeners)
     elif command == "delete":
@@ -291,11 +294,11 @@ if __name__ == "__main__":
         disable_zone(elb, args[1], args[2])
     elif command == "addl":
         if not options.listeners:
-            print "-l option required for command addl"
+            print("-l option required for command addl")
             sys.exit(1)
         add_listener(elb, args[1], options.listeners)
     elif command == "rml":
         if not args[2:]:
-            print "port required"
+            print("port required")
             sys.exit(2)
         rm_listener(elb, args[1], args[2:])

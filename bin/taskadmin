@@ -22,6 +22,9 @@
 #
 # Task/Job Administration utility
 #
+
+from __future__ import print_function
+
 VERSION="0.1"
 __version__ = VERSION
 usage = """%prog [options] [command]
@@ -35,10 +38,10 @@ Commands:
 def list():
     """List all Tasks in SDB"""
     from boto.manage.task import Task
-    print "%-8s %-40s %s" %  ("Hour", "Name", "Command")
-    print "-"*100
+    print("%-8s %-40s %s" %  ("Hour", "Name", "Command"))
+    print("-"*100)
     for t in Task.all():
-        print "%-8s %-40s %s" % (t.hour, t.name, t.command)
+        print("%-8s %-40s %s" % (t.hour, t.name, t.command))
 
 def get(name):
     """Get a task
@@ -49,27 +52,27 @@ def get(name):
     q = Task.find()
     q.filter("name like", "%s%%" % name)
     for t in q:
-        print "="*80
-        print "|               ", t.id
-        print "|%s" %  ("-"*79)
-        print "| Name:         ", t.name
-        print "| Hour:         ", t.hour
-        print "| Command:      ", t.command
+        print("="*80)
+        print("|               ", t.id)
+        print("|%s" %  ("-"*79))
+        print("| Name:         ", t.name)
+        print("| Hour:         ", t.hour)
+        print("| Command:      ", t.command)
         if t.last_executed:
-            print "| Last Run:     ", t.last_executed.ctime()
-            print "| Last Status:  ", t.last_status
-            print "| Last Run Log: ", t.last_output
-        print "="*80
+            print("| Last Run:     ", t.last_executed.ctime())
+            print("| Last Status:  ", t.last_status)
+            print("| Last Run Log: ", t.last_output)
+        print("="*80)
 
 def delete(id):
     from boto.manage.task import Task
     t = Task.get_by_id(id)
-    print "Deleting task: %s" % t.name
+    print("Deleting task: %s" % t.name)
     if raw_input("Are you sure? ").lower() in ["y", "yes"]:
         t.delete()
-        print "Deleted"
+        print("Deleted")
     else:
-        print "Canceled"
+        print("Canceled")
 
 def create(name, hour, command):
     """Create a new task
@@ -86,7 +89,7 @@ def create(name, hour, command):
     t.hour = hour
     t.command = command
     t.put()
-    print "Created task: %s" % t.id
+    print("Created task: %s" % t.id)
 
 if __name__ == "__main__":
     try:

@@ -19,6 +19,8 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
 # IN THE SOFTWARE.
 #
+
+from __future__ import print_function
 from boto.sdb.db.property import ListProperty, StringProperty, ReferenceProperty, IntegerProperty
 from boto.sdb.db.model import Model
 import time
@@ -148,5 +150,5 @@ class TestQuerying(object):
         """Test with a "like" expression"""
         query = SimpleModel.all()
         query.filter("strs like", "%oo%")
-        print query.get_query()
+        print(query.get_query())
         assert(query.count() == 1)

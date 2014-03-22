@@ -18,6 +18,7 @@
 # WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
 # IN THE SOFTWARE.
+from __future__ import print_function
 
 import xml.sax
 import datetime
@@ -829,7 +830,7 @@ class MTurkConnection(AWSQueryConnection):
         """
         body = response.read()
         if self.debug == 2:
-            print body
+            print(body)
         if '<Errors>' not in body:
             rs = ResultSet(marker_elems)
             h = handler.XmlHandler(rs, self)

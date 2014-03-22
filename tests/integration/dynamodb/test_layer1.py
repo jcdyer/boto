@@ -23,6 +23,8 @@
 """
 Tests for Layer1 of DynamoDB
 """
+
+from __future__ import print_function
 import time
 import base64
 
@@ -61,7 +63,7 @@ class DynamoDBLayer1Test(unittest.TestCase):
         return result
 
     def test_layer1_basic(self):
-        print '--- running DynamoDB Layer1 tests ---'
+        print('--- running DynamoDB Layer1 tests ---')
 
         c = self.dynamodb
 
@@ -229,7 +231,7 @@ class DynamoDBLayer1Test(unittest.TestCase):
         result = c.delete_item(table_name, key=key2)
         result = c.delete_item(table_name, key=key3)
 
-        print '--- tests completed ---'
+        print('--- tests completed ---')
 
     def test_binary_attributes(self):
         c = self.dynamodb

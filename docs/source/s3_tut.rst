@@ -75,7 +75,7 @@ other locations.  To do so, first import the Location object from the
 boto.s3.connection module, like this::
 
     >>> from boto.s3.connection import Location
-    >>> print '\n'.join(i for i in dir(Location) if i[0].isupper())
+    >>> print('\n'.join(i for i in dir(Location) if i[0].isupper()))
     APNortheast
     APSoutheast
     APSoutheast2
@@ -200,7 +200,7 @@ you'd rather not deal with any exceptions, you can use the ``lookup`` method.::
 
     >>> nonexistent = conn.lookup('i-dont-exist-at-all')
     >>> if nonexistent is None:
-    ...     print "No such bucket!"
+    ...     print("No such bucket!")
     ...
     No such bucket!
 
@@ -249,7 +249,7 @@ object to retrieve Bucket objects.
     >>> len(rs)
     11
     >>> for b in rs:
-    ... print b.name
+    ... print(b.name)
     ...
     <listing of available buckets>
     >>> b = rs[0]
@@ -304,7 +304,7 @@ by S3 and creates a set of Python objects that represent the ACL.
     >>> acp.acl.grants
     [<boto.acl.Grant instance at 0x2e6a08>]
     >>> for grant in acp.acl.grants:
-    ...   print grant.permission, grant.display_name, grant.email_address, grant.id
+    ...   print(grant.permission, grant.display_name, grant.email_address, grant.id)
     ...
     FULL_CONTROL <boto.user.User instance at 0x2e6a30>
 
@@ -428,20 +428,20 @@ We can now configure the bucket with this lifecycle policy::
 You can also retrieve the current lifecycle policy for the bucket::
 
     >>> current = bucket.get_lifecycle_config()
-    >>> print current[0].transition
+    >>> print(current[0].transition)
     <Transition: in: 30 days, GLACIER>
 
 When an object transitions to Glacier, the storage class will be
 updated.  This can be seen when you **list** the objects in a bucket::
 
     >>> for key in bucket.list():
-    ...   print key, key.storage_class
+    ...   print(key, key.storage_class)
     ...
     <Key: s3-glacier-boto-demo,logs/testlog1.log> GLACIER
 
 You can also use the prefix argument to the ``bucket.list`` method::
 
-    >>> print list(b.list(prefix='logs/testlog1.log'))[0].storage_class
+    >>> print(list(b.list(prefix='logs/testlog1.log'))[0].storage_class)
     u'GLACIER'
 
 
@@ -468,16 +468,16 @@ available for you to access.  While the object is being restored, the
 
 
     >>> key = bucket.get_key('logs/testlog1.log')
-    >>> print key.ongoing_restore
+    >>> print(key.ongoing_restore) 
     True
 
 When the restore is finished, this value will be ``False`` and the expiry
 date of the object will be non ``None``::
 
     >>> key = bucket.get_key('logs/testlog1.log')
-    >>> print key.ongoing_restore
+    >>> print(key.ongoing_restore)
     False
-    >>> print key.expiry_date
+    >>> print(key.expiry_date)
     "Fri, 21 Dec 2012 00:00:00 GMT"
 
 

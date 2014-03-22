@@ -105,7 +105,7 @@ class Bucket(S3Bucket):
         try:
             key, resp = self._get_key_internal(key_name, headers,
                                                query_args_l=query_args_l)
-        except GSResponseError, e:
+        except GSResponseError as e:
             if e.status == 403 and 'Forbidden' in e.reason:
                 # If we failed getting an object, let the user know which object
                 # failed rather than just returning a generic 403.

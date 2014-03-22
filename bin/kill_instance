@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 
+from __future__ import print_function
 import sys
 from optparse import OptionParser
 
@@ -13,7 +14,7 @@ def kill_instance(region, ids):
     # Connect the region
     ec2 = boto.connect_ec2(region=region)
     for instance_id in ids:
-        print "Stopping instance: %s" % instance_id
+        print("Stopping instance: %s" % instance_id)
         ec2.terminate_instances([instance_id])
 
 
@@ -29,7 +30,7 @@ if __name__ == "__main__":
             region = r
             break
     else:
-        print "Region %s not found." % options.region
+        print("Region %s not found." % options.region)
         sys.exit(1)
 
     kill_instance(region, args)

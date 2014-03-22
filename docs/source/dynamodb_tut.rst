@@ -137,11 +137,11 @@ attributes, you can use the
             name='messages',
             schema=Schema.create(hash_key=('forum_name', 'S'),
                                  range_key=('subject', 'S')))
-    >>> print table.write_units
+    >>> print(table.write_units)
     None
     >>> # Now we decide we need to know the write_units:
     >>> table.refresh()
-    >>> print table.write_units
+    >>> print(table.write_units)
     10
 
 
@@ -296,7 +296,7 @@ To avoid the loss of precision, you can stipulate that the
         )
     >>> item['decimal_type'] = decimal.Decimal('1.12345678912345')
     >>> item.put()
-    >>> print table.get_item('LOLCat Forum', 'Check this out!')
+    >>> print(table.get_item('LOLCat Forum', 'Check this out!'))
     {u'forum_name': 'LOLCat Forum', u'decimal_type': Decimal('1.12345678912345'),
      u'subject': 'Check this out!'}
 

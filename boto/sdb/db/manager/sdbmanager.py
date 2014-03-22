@@ -285,7 +285,7 @@ class SDBConverter(object):
             else:
                 value = value.split("-")
                 return date(int(value[0]), int(value[1]), int(value[2]))
-        except Exception, e:
+        except Exception as e:
             return None
 
     def encode_date(self, value):
@@ -364,7 +364,7 @@ class SDBConverter(object):
             bucket = s3.get_bucket(match.group(1), validate=False)
             try:
                 key = bucket.get_key(match.group(2))
-            except S3ResponseError, e:
+            except S3ResponseError as e:
                 if e.reason != "Forbidden":
                     raise
                 return None
@@ -490,7 +490,7 @@ class SDBManager(object):
                         value = prop.make_value_from_datastore(value)
                         try:
                             setattr(obj, prop.name, value)
-                        except Exception, e:
+                        except Exception as e:
                             boto.log.exception(e)
             obj._loaded = True
 

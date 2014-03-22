@@ -163,7 +163,7 @@ and you would do something along the lines of::
     >>> query = 'select * from `test-domain` where attr1="val1"'
     >>> rs = dom.select(query)
     >>> for j in rs:
-    ...   print 'o hai'
+    ...   print('o hai')
     ...
     o hai
     >>>

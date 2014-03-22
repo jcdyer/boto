@@ -101,11 +101,11 @@ Invalidate a list of paths in a CloudFront distribution::
 
     >>> paths = ['/path/to/file1.html', '/path/to/file2.html', ...]
     >>> inval_req = c.create_invalidation_request(u'ECH69MOIW7613', paths)
-    >>> print inval_req
+    >>> print(inval_req)
     <InvalidationBatch: IFCT7K03VUETK>
-    >>> print inval_req.id
+    >>> print(inval_req.id)
     u'IFCT7K03VUETK'
-    >>> print inval_req.paths
+    >>> print(inval_req.paths)
     [u'/path/to/file1.html', u'/path/to/file2.html', ..]
 
 .. warning::
@@ -120,7 +120,7 @@ invalidaton request for a given distribution using
 ``invalidation_request_status``::
 
     >>> inval_req = c.invalidation_request_status(u'ECH69MOIW7613', u'IFCT7K03VUETK')
-    >>> print inval_req
+    >>> print(inval_req)
     <InvalidationBatch: IFCT7K03VUETK>
 
 The first parameter is the CloudFront distribution id the request belongs to
@@ -130,7 +130,7 @@ It's also possible to get *all* invalidations for a given CloudFront
 distribution::
 
     >>> invals = c.get_invalidation_requests(u'ECH69MOIW7613')
-    >>> print invals
+    >>> print(invals)
     <boto.cloudfront.invalidation.InvalidationListResultSet instance at 0x15d28d0>
 
 This will return an instance of
@@ -140,7 +140,7 @@ iterable object that contains a list of
 each invalidation request and its status::
 
     >>> for inval in invals:
-    >>>     print 'Object: %s, ID: %s, Status: %s' % (inval, inval.id, inval.status)
+    >>>     print('Object: %s, ID: %s, Status: %s' % (inval, inval.id, inval.status))
     Object: <InvalidationSummary: ICXT2K02SUETK>, ID: ICXT2K02SUETK, Status: Completed
     Object: <InvalidationSummary: ITV9SV0PDNY1Y>, ID: ITV9SV0PDNY1Y, Status: Completed
     Object: <InvalidationSummary: I1X3F6N0PLGJN5>, ID: I1X3F6N0PLGJN5, Status: Completed
@@ -156,10 +156,10 @@ If you wish to paginate the results manually you can do so by specifying the
 ``max_items`` option when calling ``get_invalidation_requests``::
 
     >>> invals = c.get_invalidation_requests(u'ECH69MOIW7613', max_items=2)
-    >>> print len(list(invals))
+    >>> print(len(list(invals)))
     2
     >>> for inval in invals:
-    >>>     print 'Object: %s, ID: %s, Status: %s' % (inval, inval.id, inval.status)
+    >>>     print('Object: %s, ID: %s, Status: %s' % (inval, inval.id, inval.status))
     Object: <InvalidationSummary: ICXT2K02SUETK>, ID: ICXT2K02SUETK, Status: Completed
     Object: <InvalidationSummary: ITV9SV0PDNY1Y>, ID: ITV9SV0PDNY1Y, Status: Completed
 
@@ -172,10 +172,10 @@ results pass the ``next_marker`` attribute of the previous
 ``marker`` option to the next call to ``get_invalidation_requests``::
 
     >>> invals = c.get_invalidation_requests(u'ECH69MOIW7613', max_items=10, marker=invals.next_marker)
-    >>> print len(list(invals))
+    >>> print(len(list(invals)))
     2
     >>> for inval in invals:
-    >>>     print 'Object: %s, ID: %s, Status: %s' % (inval, inval.id, inval.status)
+    >>>     print('Object: %s, ID: %s, Status: %s' % (inval, inval.id, inval.status))
     Object: <InvalidationSummary: I1X3F6N0PLGJN5>, ID: I1X3F6N0PLGJN5, Status: Completed
     Object: <InvalidationSummary: I1F3G9N0ZLGKN2>, ID: I1F3G9N0ZLGKN2, Status: Completed
 
@@ -184,7 +184,7 @@ representing the invalidation request pointed to by a
 :class:`boto.cloudfront.invalidation.InvalidationSummary` object using::
 
     >>> inval_req = inval.get_invalidation_request()
-    >>> print inval_req
+    >>> print(inval_req)
     <InvalidationBatch: IFCT7K03VUETK>
 
 Simiarly you can get the parent
@@ -193,5 +193,5 @@ request from a :class:`boto.cloudfront.invalidation.InvalidationSummary` object
 using::
 
     >>> dist = inval.get_distribution()
-    >>> print dist
+    >>> print(dist)
     <boto.cloudfront.distribution.Distribution instance at 0x304a7e8>

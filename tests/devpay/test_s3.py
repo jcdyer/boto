@@ -25,6 +25,7 @@
 Some unit tests for the S3Connection
 """
 
+from __future__ import print_function
 import time
 import os
 import urllib
@@ -38,7 +39,7 @@ AMAZON_USER_TOKEN = '{UserToken}...your token here...'
 DEVPAY_HEADERS = { 'x-amz-security-token': AMAZON_USER_TOKEN }
 
 def test():
-    print '--- running S3Connection tests (DevPay) ---'
+    print('--- running S3Connection tests (DevPay) ---')
     c = S3Connection()
     # create a new, empty bucket
     bucket_name = 'test-%d' % int(time.time())
@@ -175,7 +176,7 @@ def test():
 
     c.delete_bucket(bucket, headers=DEVPAY_HEADERS)
 
-    print '--- tests completed ---'
+    print('--- tests completed ---')
 
 if __name__ == '__main__':
     test()

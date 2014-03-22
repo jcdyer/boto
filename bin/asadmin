@@ -22,6 +22,9 @@
 #
 # Auto Scaling Groups Tool
 #
+
+from __future__ import print_function
+
 VERSION="0.1"
 usage = """%prog [options] [command]
 Commands:
@@ -48,53 +51,53 @@ Examples:
 def get_group(autoscale, name):
     g = autoscale.get_all_groups(names=[name])
     if len(g) < 1:
-        print "No auto scaling groups by the name of %s found" % name
+        print("No auto scaling groups by the name of %s found" % name)
         return sys.exit(1)
     return g[0]
 
 def get_lc(autoscale, name):
     l = autoscale.get_all_launch_configurations(names=[name])
     if len(l) < 1:
-        print "No launch configurations by the name of %s found" % name
+        print("No launch configurations by the name of %s found" % name)
         sys.exit(1)
     return l[0]
 
 def list(autoscale):
     """List all ASGs"""
-    print "%-20s %s" %  ("Name", "LC Name")
-    print "-"*80
+    print("%-20s %s" %  ("Name", "LC Name"))
+    print("-"*80)
     groups = autoscale.get_all_groups()
     for g in groups:
-        print "%-20s %s" % (g.name, g.launch_config_name)
+        print("%-20s %s" % (g.name, g.launch_config_name))
 
 def list_lc(autoscale):
     """List all LCs"""
-    print "%-30s %-20s %s" %  ("Name", "Image ID", "Instance Type")
-    print "-"*80
+    print("%-30s %-20s %s" %  ("Name", "Image ID", "Instance Type"))
+    print("-"*80)
     for l in autoscale.get_all_launch_configurations():
-        print "%-30s %-20s %s" % (l.name, l.image_id, l.instance_type)
+        print("%-30s %-20s %s" % (l.name, l.image_id, l.instance_type))
 
 def get(autoscale, name):
     """Get details about ASG <name>"""
     g = get_group(autoscale, name)
-    print "="*80
-    print "%-30s %s" % ('Name:', g.name)
-    print "%-30s %s" % ('Launch configuration:', g.launch_config_name)
-    print "%-30s %s" % ('Minimum size:', g.min_size)
-    print "%-30s %s" % ('Maximum size:', g.max_size)
-    print "%-30s %s" % ('Desired capacity:', g.desired_capacity)
-    print "%-30s %s" % ('Load balancers:', ','.join(g.load_balancers))
+    print("="*80)
+    print("%-30s %s" % ('Name:', g.name))
+    print("%-30s %s" % ('Launch configuration:', g.launch_config_name))
+    print("%-30s %s" % ('Minimum size:', g.min_size))
+    print("%-30s %s" % ('Maximum size:', g.max_size))
+    print("%-30s %s" % ('Desired capacity:', g.desired_capacity))
+    print("%-30s %s" % ('Load balancers:', ','.join(g.load_balancers)))
 
-    print
+    print()
 
-    print "Instances"
-    print "---------"
-    print "%-20s %-20s %-20s %s" % ("ID", "Status", "Health", "AZ")
+    print("Instances")
+    print("---------")
+    print("%-20s %-20s %-20s %s" % ("ID", "Status", "Health", "AZ"))
     for i in g.instances:
-        print "%-20s %-20s %-20s %s" % \
-        (i.instance_id, i.lifecycle_state, i.health_status, i.availability_zone)
+        print("%-20s %-20s %-20s %s" % \
+        (i.instance_id, i.lifecycle_state, i.health_status, i.availability_zone))
 
-    print
+    print()
 
 def create(autoscale, name, zones, lc_name, load_balancers, hc_type, hc_period,
         min_size, max_size, cooldown, capacity):
@@ -126,14 +129,14 @@ def delete(autoscale, name, force_delete=False):
     """Delete this ASG"""
     g = get_group(autoscale, name)
     autoscale.delete_auto_scaling_group(g.name, force_delete)
-    print "Auto scaling group %s deleted" % name
+    print("Auto scaling group %s deleted" % name)
     return list(autoscale)
 
 def delete_lc(autoscale, name):
     """Delete this LC"""
     l = get_lc(autoscale, name)
     autoscale.delete_launch_configuration(name)
-    print "Launch configuration %s deleted" % name
+    print("Launch configuration %s deleted" % name)
     return list_lc(autoscale)
 
 def update_image(autoscale, name, lc_name, image_id, is_migrate_instances=False):
@@ -166,7 +169,7 @@ def migrate_instances(autoscale, name):
     old_instances = g.instances
     ec2 = boto.connect_ec2()
     for old_instance in old_instances:
-        print "Terminating instance " + old_instance.instance_id
+        print("Terminating instance " + old_instance.instance_id)
         ec2.terminate_instances([old_instance.instance_id])
         while True:
             g = get_group(autoscale, name)
@@ -176,11 +179,11 @@ def migrate_instances(autoscale, name):
                 instancesReady = True
                 if(old_instance.instance_id == new_instance.instance_id):
                     hasOldInstance = True
-                    print "Waiting for old instance to shut down..."
+                    print("Waiting for old instance to shut down...")
                     break
                 elif(new_instance.lifecycle_state != 'InService'):
                     instancesReady = False
-                    print "Waiting for instances to be ready...."
+                    print("Waiting for instances to be ready....")
                     break
             if(not hasOldInstance and instancesReady):
                 break
@@ -259,7 +262,7 @@ if __name__ == "__main__":
 
     autoscale = boto.connect_autoscale()
 
-    print "%s" % (autoscale.region.endpoint)
+    print("%s" % (autoscale.region.endpoint))
 
     command = args[0].lower()
     if command in ("ls", "list"):

@@ -28,7 +28,7 @@ and in the following order:
 The options are merged into a single, in-memory configuration that is
 available as :py:mod:`boto.config`. The :py:class:`boto.pyami.config.Config`
 class is a subclass of the standard Python
-:py:class:`ConfigParser.SafeConfigParser` object and inherits all of the
+:py:class:`configparser.SafeConfigParser` object and inherits all of the
 methods of that object. In addition, the boto
 :py:class:`Config <boto.pyami.config.Config>` class defines additional
 methods that are described on the PyamiConfigMethods page.

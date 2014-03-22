@@ -22,11 +22,14 @@
 #
 # Tools to dump and recover an SDB domain
 #
-VERSION = "%prog version 1.0"
+
+from __future__ import print_function
 import boto
 import time
 from boto import sdb
 from boto.compat import json
+
+VERSION = "%prog version 1.0"
 
 def choice_input(options, default=None, title=None):
     """
@@ -34,10 +37,10 @@ def choice_input(options, default=None, title=None):
     """
     if title == None:
         title = "Please choose"
-    print title
+    print(title)
     objects = []
     for n, obj in enumerate(options):
-        print "%s: %s" % (n, obj)
+        print("%s: %s" % (n, obj))
         objects.append(obj)
     choice = int(raw_input(">>> "))
     try:
@@ -55,13 +58,13 @@ def dump_db(domain, file_name, use_json=False, sort_attributes=False):
     """
     Dump SDB domain to file
     """
-    f = open(file_name, "w")
-    if use_json:
-        for item in domain:
-            data = {"name": item.name, "attributes": item}
-            print >> f, json.dumps(data, sort_keys=sort_attributes)
-    else:
-        doc = domain.to_xml(f)
+    with open(file_name, "w") as f:
+        if use_json:
+            for item in domain:
+                data = {"name": item.name, "attributes": item}
+                print(json.dumps(data, sort_keys=sort_attributes), file=f)
+        else:
+            doc = domain.to_xml(f)
 
 def empty_db(domain):
     """
@@ -92,7 +95,7 @@ def load_db(domain, file, use_json=False):
 
 def check_valid_region(conn, region):
     if conn is None:
-        print 'Invalid region (%s)' % region
+        print('Invalid region (%s)' % region)
         sys.exit(1)
 
 def create_db(domain_name, region_name):
@@ -134,7 +137,7 @@ if __name__ == "__main__":
     check_valid_region(sdb, options.region_name)
     if options.list:
         for db in sdb.get_all_domains():
-            print db
+            print(db)
         exit()
 
     if not options.dump and not options.load and not options.empty:
@@ -165,15 +168,15 @@ if __name__ == "__main__":
         if confirm("WARNING!!! Are you sure you want to empty the following domains?: %s" % domains):
             stime = time.time()
             for domain in domains:
-                print "--------> Emptying %s <--------" % domain.name
+                print("--------> Emptying %s <--------" % domain.name)
                 empty_db(domain)
         else:
-            print "Canceling operations"
+            print("Canceling operations")
             exit()
 
     if options.dump:
         for domain in domains:
-            print "--------> Dumping %s <---------" % domain.name
+            print("--------> Dumping %s <---------" % domain.name)
             if options.file_name:
                 file_name = options.file_name
             else:
@@ -182,7 +185,7 @@ if __name__ == "__main__":
 
     if options.load:
         for domain in domains:
-            print "---------> Loading %s <----------" % domain.name
+            print("---------> Loading %s <----------" % domain.name)
             if options.file_name:
                 file_name = options.file_name
             else:
@@ -191,4 +194,4 @@ if __name__ == "__main__":
 
 
     total_time = round(time.time() - stime, 2)
-    print "--------> Finished in %s <--------" % total_time
+    print("--------> Finished in %s <--------" % total_time)

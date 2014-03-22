@@ -24,7 +24,8 @@
 """
 Some unit tests for the SQSConnection
 """
-from __future__ import with_statement
+
+from __future__ import with_statement, print_function
 
 import time
 from threading import Timer
@@ -41,7 +42,7 @@ class SQSConnectionTest(unittest.TestCase):
     sqs = True
 
     def test_1_basic(self):
-        print '--- running SQSConnection tests ---'
+        print('--- running SQSConnection tests ---')
         c = SQSConnection()
         rs = c.get_all_queues()
         num_queues = 0
@@ -152,7 +153,7 @@ class SQSConnectionTest(unittest.TestCase):
         m = queue_2.read()
         assert m['foo'] == 'bar'
 
-        print '--- tests completed ---'
+        print('--- tests completed ---')
 
     def test_sqs_timeout(self):
         c = SQSConnection()

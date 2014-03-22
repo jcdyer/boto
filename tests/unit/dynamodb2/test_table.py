@@ -1898,7 +1898,7 @@ class TableTestCase(unittest.TestCase):
             try:
                 with self.users.batch_write() as batch:
                     raise Exception('OH NOES')
-            except Exception, e:
+            except Exception as e:
                 self.assertEqual(str(e), 'OH NOES')
 
         self.assertFalse(mock_batch.called)

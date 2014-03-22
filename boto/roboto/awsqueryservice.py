@@ -1,3 +1,5 @@
+from __future__ import print_function
+
 import os
 import urlparse
 import boto
@@ -77,7 +79,7 @@ class AWSQueryService(boto.connection.AWSQueryConnection):
                                     value = value.strip()
                                     self.args['aws_secret_access_key'] = value
             else:
-                print 'Warning: unable to read AWS_CREDENTIAL_FILE'
+                print('Warning: unable to read AWS_CREDENTIAL_FILE')
 
     def check_for_env_url(self):
         """

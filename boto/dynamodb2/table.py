@@ -1,3 +1,4 @@
+from __future__ import print_function
 import boto
 from boto.dynamodb2 import exceptions
 from boto.dynamodb2.fields import (HashKey, RangeKey,
@@ -877,7 +878,7 @@ class Table(object):
             # Look for last names equal to "Doe".
             >>> results = users.query(last_name__eq='Doe')
             >>> for res in results:
-            ...     print res['first_name']
+            ...     print(res['first_name'])
             'John'
             'Jane'
 
@@ -888,7 +889,7 @@ class Table(object):
             ...     limit=3
             ... )
             >>> for res in results:
-            ...     print res['first_name']
+            ...     print(res['first_name'])
             'Alice'
             'Jane'
             'John'
@@ -901,7 +902,7 @@ class Table(object):
             ...     consistent=True
             ... )
             >>> for res in results:
-            ...     print res['first_name']
+            ...     print(res['first_name'])
             'Alice'
             'Bob'
             'John'
@@ -1096,7 +1097,7 @@ class Table(object):
             # Look for last names beginning with "D".
             >>> results = users.scan(last_name__beginswith='D')
             >>> for res in results:
-            ...     print res['first_name']
+            ...     print(res['first_name'])
             'Alice'
             'John'
             'Jane'
@@ -1107,7 +1108,7 @@ class Table(object):
             ...     limit=1
             ... )
             >>> for res in results:
-            ...     print res['first_name']
+            ...     print(res['first_name'])
             'Alice'
 
         """
@@ -1203,7 +1204,7 @@ class Table(object):
             ...     },
             ... ])
             >>> for res in results:
-            ...     print res['first_name']
+            ...     print(res['first_name'])
             'John'
             'Jane'
             'Fred'

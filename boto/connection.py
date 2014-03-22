@@ -43,7 +43,7 @@
 Handles basic connections to AWS
 """
 
-from __future__ import with_statement
+from __future__ import with_statement, print_function
 import base64
 from datetime import datetime
 import errno
@@ -693,8 +693,8 @@ class AWSAuthConnection(object):
                 self.proxy_pass = config.get_value('Boto', 'proxy_pass', None)
 
         if not self.proxy_port and self.proxy:
-            print "http_proxy environment variable does not specify " \
-                "a port, using default"
+            print("http_proxy environment variable does not specify "
+                "a port, using default")
             self.proxy_port = self.port
 
         self.no_proxy = os.environ.get('no_proxy', '') or os.environ.get('NO_PROXY', '')
@@ -974,12 +974,12 @@ class AWSAuthConnection(object):
                                                           scheme == 'https')
                     response = None
                     continue
-            except PleaseRetryException, e:
+            except PleaseRetryException as e:
                 boto.log.debug('encountered a retry exception: %s' % e)
                 connection = self.new_http_connection(request.host, request.port,
                                                       self.is_secure)
                 response = e.response
-            except self.http_exceptions, e:
+            except self.http_exceptions as e:
                 for unretryable in self.http_unretryable_exceptions:
                     if isinstance(e, unretryable):
                         boto.log.debug(

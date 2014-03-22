@@ -19,6 +19,8 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
 # IN THE SOFTWARE.
 #
+
+from __future__ import print_function
 from boto.sdb.db.property import ListProperty
 from boto.sdb.db.model import Model
 import time
@@ -90,7 +92,7 @@ class TestLists(object):
         t.put()
         self.objs.append(t)
         time.sleep(3)
-        print SimpleListModel.all().filter("strs !=", "Fizzle").get_query()
+        print(SimpleListModel.all().filter("strs !=", "Fizzle").get_query())
         for tt in SimpleListModel.all().filter("strs !=", "Fizzle"):
-            print tt.strs
+            print(tt.strs)
             assert("Fizzle" not in tt.strs)

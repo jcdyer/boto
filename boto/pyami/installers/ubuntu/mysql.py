@@ -31,7 +31,10 @@ from boto.pyami.installers.ubuntu.installer import Installer
 import os
 import boto
 from boto.utils import ShellCommand
-from ConfigParser import SafeConfigParser
+try:
+    from configparser import SafeConfigParser # python 3
+except ImportError:
+    from ConfigParser import SafeConfigParser # python 2
 import time
 
 ConfigSection = """

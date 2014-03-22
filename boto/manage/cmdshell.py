@@ -19,6 +19,7 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
 # IN THE SOFTWARE.
 
+from __future__ import print_function
 from boto.mashups.interactive import interactive_shell
 import boto
 import os
@@ -56,23 +57,24 @@ class SSHClient(object):
                                          pkey=self._pkey,
                                          timeout=self._timeout)
                 return
-            except socket.error, (value, message):
+            except socket.error as err:
+                value, message = err
                 if value in (51, 61, 111):
-                    print 'SSH Connection refused, will retry in 5 seconds'
+                    print('SSH Connection refused, will retry in 5 seconds')
                     time.sleep(5)
                     retry += 1
                 else:
                     raise
             except paramiko.BadHostKeyException:
-                print "%s has an entry in ~/.ssh/known_hosts and it doesn't match" % self.server.hostname
-                print 'Edit that file to remove the entry and then hit return to try again'
+                print("%s has an entry in ~/.ssh/known_hosts and it doesn't match" % self.server.hostname)
+                print('Edit that file to remove the entry and then hit return to try again')
                 raw_input('Hit Enter when ready')
                 retry += 1
             except EOFError:
-                print 'Unexpected Error from SSH Connection, retry in 5 seconds'
+                print('Unexpected Error from SSH Connection, retry in 5 seconds')
                 time.sleep(5)
                 retry += 1
-        print 'Could not establish SSH connection'
+        print('Could not establish SSH connection')
 
     def open_sftp(self):
         return self._ssh_client.open_sftp()
