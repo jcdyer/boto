@@ -27,6 +27,7 @@ except ImportError:
     except ImportError:
         from StringIO import StringIO
 
+import six
 
 class Blob(object):
     """Blob object"""
@@ -43,19 +44,22 @@ class Blob(object):
             f = StringIO(self.value)
         return f
 
-    def __str__(self):
-        return unicode(self).encode('utf-8')
+    def __bytes__(self):
+        return six.text_type(self).encode('utf-8')
 
-    def __unicode__(self):
+    def __str__(self):
         if hasattr(self.file, "get_contents_as_string"):
             value = self.file.get_contents_as_string()
         else:
             value = self.file.getvalue()
-        if isinstance(value, unicode):
+        if isinstance(value, six.text_type):
             return value
         else:
             return value.decode('utf-8')
 
+    if six.PY2:
+        __str__, __unicode__ = __bytes__, __str__
+        del __bytes__
 
     def read(self):
         if hasattr(self.file, "get_contents_as_string"):

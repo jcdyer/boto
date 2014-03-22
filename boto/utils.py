@@ -40,10 +40,12 @@ Some handy utility functions used by several classes.
 """
 
 from __future__ import print_function
-import socket
-from six.moves import urllib
 import imp
+import six
+from six.moves import urllib
+import socket
 import subprocess
+
 try:
     from io import StringIO
 except ImportError:
@@ -203,7 +205,7 @@ def get_aws_metadata(headers, provider=None):
         if hkey.lower().startswith(metadata_prefix):
             val = urllib.parse.unquote(headers[hkey])
             try:
-                metadata[hkey[len(metadata_prefix):]] = unicode(val, 'utf-8')
+                metadata[hkey[len(metadata_prefix):]] = six.text_type(val, 'utf-8')
             except UnicodeDecodeError:
                 metadata[hkey[len(metadata_prefix):]] = val
             del headers[hkey]
@@ -849,9 +851,9 @@ def notify(subject, body=None, html_body=None, to_string=None,
 
 
 def get_utf8_value(value):
-    if not isinstance(value, basestring):
-        value = str(value)
-    if isinstance(value, unicode):
+    if not isinstance(value, (six.binary_type, six.text_type)):
+        value = six.text_type(value)
+    if isinstance(value, six.text_type):
         return value.encode('utf-8')
     else:
         return value

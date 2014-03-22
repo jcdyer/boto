@@ -28,6 +28,7 @@ import base64
 from decimal import (Decimal, DecimalException, Context,
                      Clamped, Overflow, Inexact, Underflow, Rounded)
 from exceptions import DynamoDBNumberError
+import six
 
 
 DYNAMODB_CONTEXT = Context(
@@ -253,7 +254,7 @@ class Dynamizer(object):
         raise DynamoDBNumberError(msg)
 
     def _encode_s(self, attr):
-        if isinstance(attr, unicode):
+        if isinstance(attr, six.text_type):
             attr = attr.encode('utf-8')
         elif not isinstance(attr, str):
             attr = str(attr)

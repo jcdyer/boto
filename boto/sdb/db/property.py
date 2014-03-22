@@ -20,6 +20,7 @@
 # IN THE SOFTWARE.
 
 import datetime
+import six
 from key import Key
 from boto.utils import Password
 from boto.sdb.db.query import Query
@@ -626,16 +627,16 @@ class ListProperty(Property):
             if not isinstance(value, list):
                 value = [value]
 
-        if self.item_type in (int, long):
-            item_type = (int, long)
-        elif self.item_type in (str, unicode):
-            item_type = (str, unicode)
+        if self.item_type in six.integer_types:
+            item_type = six.integer_types
+        elif self.item_type in (six.binary_type, six.text_type):
+            item_type = (six.binary_type, six.text_type)
         else:
             item_type = self.item_type
 
         for item in value:
             if not isinstance(item, item_type):
-                if item_type == (int, long):
+                if item_type == six.integer_types:
                     raise ValueError('Items in the %s list must all be integers.' % self.name)
                 else:
                     raise ValueError('Items in the %s list must all be %s instances' %
@@ -650,10 +651,10 @@ class ListProperty(Property):
 
     def __set__(self, obj, value):
         """Override the set method to allow them to set the property to an instance of the item_type instead of requiring a list to be passed in"""
-        if self.item_type in (int, long):
-            item_type = (int, long)
-        elif self.item_type in (str, unicode):
-            item_type = (str, unicode)
+        if self.item_type in six.integer_types:
+            item_type = six.integer_types 
+        elif self.item_type in (six.binary_type, six.text_type):
+            item_type = (six.binary_type, six.text_type)
         else:
             item_type = self.item_type
         if isinstance(value, item_type):
@@ -680,16 +681,16 @@ class MapProperty(Property):
             if not isinstance(value, dict):
                 raise ValueError('Value must of type dict')
 
-        if self.item_type in (int, long):
-            item_type = (int, long)
-        elif self.item_type in (str, unicode):
-            item_type = (str, unicode)
+        if self.item_type in six.integer_types:
+            item_type = six.integer_types
+        elif self.item_type in (six.binary_type, six.text_type):
+            item_type = (six.binary_type, six.text_type)
         else:
             item_type = self.item_type
 
         for key in value:
             if not isinstance(value[key], item_type):
-                if item_type == (int, long):
+                if item_type == six.integer_types:
                     raise ValueError('Values in the %s Map must all be integers.' % self.name)
                 else:
                     raise ValueError('Values in the %s Map must all be %s instances' %

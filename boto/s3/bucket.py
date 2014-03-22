@@ -55,6 +55,7 @@ except ImportError:
 import re
 import base64
 from collections import defaultdict
+import six
 from six.moves import urllib
 
 # as per http://goo.gl/BDuud (02/19/2011)
@@ -384,7 +385,7 @@ class Bucket(object):
             key = key.replace('_', '-')
             if key == 'maxkeys':
                 key = 'max-keys'
-            if isinstance(value, unicode):
+            if isinstance(value, six.text_type):
                 value = value.encode('utf-8')
             if value is not None and value != '':
                 pairs.append('%s=%s' % (

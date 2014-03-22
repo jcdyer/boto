@@ -20,6 +20,7 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
 # IN THE SOFTWARE.
 import re
+import six
 from six.moves import urllib
 import base64
 
@@ -92,7 +93,7 @@ class SESConnection(AWSAuthConnection):
         params['Action'] = action
 
         for k, v in params.items():
-            if isinstance(v, unicode):  # UTF-8 encode only if it's Unicode
+            if isinstance(v, six.text_type):  # UTF-8 encode only if it's Unicode
                 params[k] = v.encode('utf-8')
 
         response = super(SESConnection, self).make_request(

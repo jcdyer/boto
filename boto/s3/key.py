@@ -38,6 +38,7 @@ except ImportError:
 import base64
 import binascii
 import math
+import six
 from six.moves import urllib
 import boto.utils
 from boto.exception import BotoClientError
@@ -1377,7 +1378,7 @@ class Key(object):
             be encrypted on the server-side by S3 and will be stored
             in an encrypted form while at rest in S3.
         """
-        if isinstance(string_data, unicode):
+        if isinstance(string_data, six.text_type):
             string_data = string_data.encode("utf-8")
         fp = StringIO(string_data)
         r = self.set_contents_from_file(fp, headers, replace, cb, num_cb,

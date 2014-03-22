@@ -28,6 +28,7 @@ This class encapsulates the provider-specific header differences.
 
 import os
 from datetime import datetime
+import six
 
 import boto
 from boto import config
@@ -335,7 +336,7 @@ class Provider(object):
                            self._credential_expiry_time - datetime.now(), expires_at)
 
     def _convert_key_to_str(self, key):
-        if isinstance(key, unicode):
+        if isinstance(key, six.text_type):
             # the secret key must be bytes and not unicode to work
             #  properly with hmac.new (see http://bugs.python.org/issue5285)
             return str(key)

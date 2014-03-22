@@ -39,6 +39,7 @@ import hmac
 import os
 import sys
 import time
+import six
 from six.moves import urllib
 import posixpath
 
@@ -64,9 +65,10 @@ class HmacKeys(object):
 
     def update_provider(self, provider):
         self._provider = provider
-        self._hmac = hmac.new(self._provider.secret_key, digestmod=sha)
+        self._hmac = hmac.new(self._provider.secret_key.encode('utf-8'), 
+                              digestmod=sha)
         if sha256:
-            self._hmac_256 = hmac.new(self._provider.secret_key,
+            self._hmac_256 = hmac.new(self._provider.secret_key.encode('utf-8'),
                                       digestmod=sha256)
         else:
             self._hmac_256 = None
@@ -387,7 +389,7 @@ class HmacAuthV4Handler(AuthHandler, HmacKeys):
         # the entire body into memory.
         if hasattr(body, 'seek') and hasattr(body, 'read'):
             return boto.utils.compute_hash(body, hash_algorithm=sha256)[0]
-        return sha256(http_request.body).hexdigest()
+        return sha256(http_request.body.encode('utf-8')).hexdigest()
 
     def canonical_request(self, http_request):
         cr = [http_request.method.upper()]
@@ -461,7 +463,7 @@ class HmacAuthV4Handler(AuthHandler, HmacKeys):
         sts = ['AWS4-HMAC-SHA256']
         sts.append(http_request.headers['X-Amz-Date'])
         sts.append(self.credential_scope(http_request))
-        sts.append(sha256(canonical_request).hexdigest())
+        sts.append(sha256(canonical_request.encode('utf-8')).hexdigest())
         return '\n'.join(sts)
 
     def signature(self, http_request, string_to_sign):
@@ -537,7 +539,7 @@ class S3HmacAuthV4Handler(HmacAuthV4Handler, AuthHandler):
     def canonical_uri(self, http_request):
         # S3 does **NOT** do path normalization that SigV4 typically does.
         # Urlencode the path, **NOT** ``auth_path`` (because vhosting).
-        path = urlparse.urlparse(http_request.path)
+        path = urllib.parse.urlparse(http_request.path)
         # Because some quoting may have already been applied, let's back it out.
         unquoted = urllib.parse.unquote(path.path)
         # Requote, this time addressing all characters.
@@ -627,14 +629,14 @@ class S3HmacAuthV4Handler(HmacAuthV4Handler, AuthHandler):
         # **ON** the ``path/auth_path``.
         # Rip them apart, so the ``auth_path/params`` can be signed
         # appropriately.
-        parsed_path = urlparse.urlparse(modified_req.auth_path)
+        parsed_path = urllib.parse.urlparse(modified_req.auth_path)
         modified_req.auth_path = parsed_path.path
 
         if modified_req.params is None:
             modified_req.params = {}
 
         raw_qs = parsed_path.query
-        existing_qs = urlparse.parse_qs(
+        existing_qs = urllib.parse.parse_qs(
             raw_qs,
             keep_blank_values=True
         )
@@ -682,11 +684,11 @@ class QueryAuthHandler(AuthHandler):
         return value
 
     def _build_query_string(self, params):
-        keys = params.keys()
-        keys.sort(cmp=lambda x, y: cmp(x.lower(), y.lower()))
+        keys = list(params.keys())
+        keys.sort(key=lambda x: x.lower())
         pairs = []
         for key in keys:
-            val = boto.utils.get_utf8_value(params[key])
+            val = params[key]
             pairs.append(key + '=' + self._escape_value(val))
         return '&'.join(pairs)
 
@@ -747,7 +749,7 @@ class QuerySignatureV0AuthHandler(QuerySignatureHelper, AuthHandler):
         s = params['Action'] + params['Timestamp']
         hmac.update(s)
         keys = params.keys()
-        keys.sort(cmp=lambda x, y: cmp(x.lower(), y.lower()))
+        keys.sort(key=lambda x: x.lower())
         pairs = []
         for key in keys:
             val = boto.utils.get_utf8_value(params[key])
@@ -773,7 +775,7 @@ class QuerySignatureV1AuthHandler(QuerySignatureHelper, AuthHandler):
         boto.log.debug('using _calc_signature_1')
         hmac = self._get_hmac()
         keys = params.keys()
-        keys.sort(cmp=lambda x, y: cmp(x.lower(), y.lower()))
+        keys.sort(key=lambda x: x.lower())
         pairs = []
         for key in keys:
             hmac.update(key)

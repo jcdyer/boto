@@ -23,6 +23,7 @@
 Represents an SDB Domain
 """
 from __future__ import print_function
+import six
 from boto.sdb.queryresultset import SelectResultSet
 
 class Domain(object):
@@ -252,10 +253,10 @@ class Domain(object):
                     values = [values]
                 for value in values:
                     print('\t\t\t<value><![CDATA[', end='', file=f)
-                    if isinstance(value, unicode):
+                    if isinstance(value, six.text_type):
                         value = value.encode('utf-8', 'replace')
                     else:
-                        value = unicode(value, errors='replace').encode('utf-8', 'replace')
+                        value = six.text_type(value, errors='replace').encode('utf-8', 'replace')
                     f.write(value)
                     print(']]></value>', file=f)
                 print('\t\t</attribute>', file=f)

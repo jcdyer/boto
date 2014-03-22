@@ -20,6 +20,8 @@
 # IN THE SOFTWARE.
 #
 
+import six
+
 from tests.integration.route53 import Route53TestCase
 
 from boto.route53.healthcheck import HealthCheck
@@ -130,7 +132,7 @@ class TestRoute53HealthCheck(Route53TestCase):
         hc_config = (result[u'CreateHealthCheckResponse']
                      [u'HealthCheck'][u'HealthCheckConfig'])
         self.assertEquals(hc_config[u'RequestInterval'],
-                          unicode(hc_params['request_interval']))
+                          six.text_type(hc_params['request_interval']))
 
     def health_check_params(self, **kwargs):
         params = {

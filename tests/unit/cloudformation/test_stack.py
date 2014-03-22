@@ -6,7 +6,7 @@ import boto.handler
 import boto.resultset
 import boto.cloudformation
 
-SAMPLE_XML = r"""
+SAMPLE_XML = ur"""
 <DescribeStacksResponse xmlns="http://cloudformation.amazonaws.com/doc/2010-05-15/">
   <DescribeStacksResult>
     <Stacks>
@@ -52,7 +52,7 @@ SAMPLE_XML = r"""
 </DescribeStacksResponse>
 """
 
-DESCRIBE_STACK_RESOURCE_XML = r"""
+DESCRIBE_STACK_RESOURCE_XML = ur"""
 <DescribeStackResourcesResult>
   <StackResources>
     <member>
@@ -77,7 +77,7 @@ DESCRIBE_STACK_RESOURCE_XML = r"""
 </DescribeStackResourcesResult>
 """
 
-LIST_STACKS_XML = r"""
+LIST_STACKS_XML = ur"""
 <ListStacksResponse>
  <ListStacksResult>
   <StackSummaries>
@@ -141,7 +141,7 @@ class TestStackParse(unittest.TestCase):
           ('member', boto.cloudformation.stack.Stack)
         ])
         h = boto.handler.XmlHandler(rs, None)
-        xml.sax.parseString(SAMPLE_XML, h)
+        xml.sax.parseString(SAMPLE_XML.encode('utf-8'), h)
         tags = rs[0].tags
         self.assertEqual(tags, {u'key0': u'value0', u'key1': u'value1'})
 
@@ -155,7 +155,7 @@ class TestStackParse(unittest.TestCase):
           ('member', boto.cloudformation.stack.Stack)
         ])
         h = boto.handler.XmlHandler(rs, None)
-        xml.sax.parseString(millis_xml, h)
+        xml.sax.parseString(millis_xml.encode('utf-8'), h)
         creation_time = rs[0].creation_time
         self.assertEqual(
           creation_time,
@@ -167,7 +167,7 @@ class TestStackParse(unittest.TestCase):
           ('member', boto.cloudformation.stack.StackResource)
         ])
         h = boto.handler.XmlHandler(rs, None)
-        xml.sax.parseString(DESCRIBE_STACK_RESOURCE_XML, h)
+        xml.sax.parseString(DESCRIBE_STACK_RESOURCE_XML.encode('utf-8'), h)
         timestamp_1 = rs[0].timestamp
         self.assertEqual(
           timestamp_1,
@@ -184,7 +184,7 @@ class TestStackParse(unittest.TestCase):
             ('member', boto.cloudformation.stack.StackSummary)
         ])
         h = boto.handler.XmlHandler(rs, None)
-        xml.sax.parseString(LIST_STACKS_XML, h)
+        xml.sax.parseString(LIST_STACKS_XML.encode('utf-8'), h)
         timestamp_1 = rs[0].creation_time
         self.assertEqual(
             timestamp_1,
@@ -206,7 +206,7 @@ class TestStackParse(unittest.TestCase):
             ('member', boto.cloudformation.stack.StackResourceSummary)
         ])
         h = boto.handler.XmlHandler(rs, None)
-        xml.sax.parseString(LIST_STACK_RESOURCES_XML, h)
+        xml.sax.parseString(LIST_STACK_RESOURCES_XML.encode('utf-8'), h)
         timestamp_1 = rs[0].last_updated_time
         self.assertEqual(
             timestamp_1,
@@ -222,7 +222,7 @@ class TestStackParse(unittest.TestCase):
         # SAMPLE_XML defines DisableRollback=="false"
         rs = boto.resultset.ResultSet([('member', boto.cloudformation.stack.Stack)])
         h = boto.handler.XmlHandler(rs, None)
-        xml.sax.parseString(SAMPLE_XML, h)
+        xml.sax.parseString(SAMPLE_XML.encode('utf-8'), h)
         disable_rollback = rs[0].disable_rollback
         self.assertFalse(disable_rollback)
 
@@ -231,7 +231,7 @@ class TestStackParse(unittest.TestCase):
         rs = boto.resultset.ResultSet([('member', boto.cloudformation.stack.Stack)])
         h = boto.handler.XmlHandler(rs, None)
         sample_xml_upper = SAMPLE_XML.replace('false', 'False')
-        xml.sax.parseString(sample_xml_upper, h)
+        xml.sax.parseString(sample_xml_upper.encode('utf-8'), h)
         disable_rollback = rs[0].disable_rollback
         self.assertFalse(disable_rollback)
 
@@ -239,7 +239,7 @@ class TestStackParse(unittest.TestCase):
         rs = boto.resultset.ResultSet([('member', boto.cloudformation.stack.Stack)])
         h = boto.handler.XmlHandler(rs, None)
         sample_xml_upper = SAMPLE_XML.replace('false', 'true')
-        xml.sax.parseString(sample_xml_upper, h)
+        xml.sax.parseString(sample_xml_upper.encode('utf-8'), h)
         disable_rollback = rs[0].disable_rollback
         self.assertTrue(disable_rollback)
 
@@ -247,7 +247,7 @@ class TestStackParse(unittest.TestCase):
         rs = boto.resultset.ResultSet([('member', boto.cloudformation.stack.Stack)])
         h = boto.handler.XmlHandler(rs, None)
         sample_xml_upper = SAMPLE_XML.replace('false', 'True')
-        xml.sax.parseString(sample_xml_upper, h)
+        xml.sax.parseString(sample_xml_upper.encode('utf-8'), h)
         disable_rollback = rs[0].disable_rollback
         self.assertTrue(disable_rollback)
 

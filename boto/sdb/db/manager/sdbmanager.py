@@ -19,16 +19,18 @@
 # WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
 # IN THE SOFTWARE.
-import boto
+from datetime import datetime, date, time
 import re
-from boto.utils import find_class
 import uuid
+import six
+from six.moves import urllib
+
+import boto
+from boto.utils import find_class
 from boto.sdb.db.key import Key
 from boto.sdb.db.blob import Blob
 from boto.sdb.db.property import ListProperty, MapProperty
-from datetime import datetime, date, time
 from boto.exception import SDBPersistenceError, S3ResponseError
-from six.moves import urllib
 
 ISO8601 = '%Y-%m-%dT%H:%M:%SZ'
 
@@ -379,7 +381,7 @@ class SDBConverter(object):
         if not isinstance(value, str):
             return value
         try:
-            return unicode(value, 'utf-8')
+            return six.text_type(value, 'utf-8')
         except:
             # really, this should throw an exception.
             # in the interest of not breaking current

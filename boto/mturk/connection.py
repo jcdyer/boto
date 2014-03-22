@@ -23,6 +23,7 @@ from __future__ import print_function
 import xml.sax
 import datetime
 import itertools
+import six
 
 from boto import handler
 from boto import config
@@ -849,7 +850,7 @@ class MTurkConnection(AWSQueryConnection):
             keywords = ', '.join(keywords)
         if isinstance(keywords, str):
             final_keywords = keywords
-        elif isinstance(keywords, unicode):
+        elif isinstance(keywords, six.text_type):
             final_keywords = keywords.encode('utf-8')
         elif keywords is None:
             final_keywords = ""

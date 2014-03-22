@@ -54,10 +54,11 @@ except ImportError:
 import os
 import random
 import re
+import six
+from six.moves import urllib
 import socket
 import sys
 import time
-from six.moves import urllib
 import xml.sax
 import copy
 
@@ -373,7 +374,7 @@ class HTTPRequest(object):
     def authorize(self, connection, **kwargs):
         for key in self.headers:
             val = self.headers[key]
-            if isinstance(val, unicode):
+            if isinstance(val, six.text_type):
                 safe = '!"#$%&\'()*+,/:;<=>?@[\\]^`{|}~'
                 self.headers[key] = urllib.parse.quote(val.encode('utf-8'), safe)
 
@@ -529,7 +530,7 @@ class AWSAuthConnection(object):
         self.host = host
         self.path = path
         # if the value passed in for debug
-        if not isinstance(debug, (int, long)):
+        if not isinstance(debug, six.integer_types):
             debug = 0
         self.debug = config.getint('Boto', 'debug', debug)
         self.host_header = None
@@ -1090,7 +1091,7 @@ class AWSQueryConnection(AWSAuthConnection):
         return self._mexe(http_request)
 
     def build_list_params(self, params, items, label):
-        if isinstance(items, basestring):
+        if isinstance(items, six.string_types):
             items = [items]
         for i in range(1, len(items) + 1):
             params['%s.%d' % (label, i)] = items[i - 1]
@@ -1150,7 +1151,7 @@ class AWSQueryConnection(AWSAuthConnection):
         elif response.status == 200:
             rs = ResultSet(markers)
             h = boto.handler.XmlHandler(rs, parent)
-            xml.sax.parseString(body, h)
+            xml.sax.parseString(body.encode('utf-8'), h)
             return rs
         else:
             boto.log.error('%s %s' % (response.status, response.reason))
@@ -1170,7 +1171,7 @@ class AWSQueryConnection(AWSAuthConnection):
         elif response.status == 200:
             obj = cls(parent)
             h = boto.handler.XmlHandler(obj, parent)
-            xml.sax.parseString(body, h)
+            xml.sax.parseString(body.encode('utf-8'), h)
             return obj
         else:
             boto.log.error('%s %s' % (response.status, response.reason))
@@ -1189,7 +1190,7 @@ class AWSQueryConnection(AWSAuthConnection):
         elif response.status == 200:
             rs = ResultSet()
             h = boto.handler.XmlHandler(rs, parent)
-            xml.sax.parseString(body, h)
+            xml.sax.parseString(body.encode('utf-8'), h)
             return rs.status
         else:
             boto.log.error('%s %s' % (response.status, response.reason))
