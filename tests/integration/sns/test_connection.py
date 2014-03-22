@@ -21,7 +21,10 @@
 # IN THE SOFTWARE.
 from __future__ import with_statement
 import mock
-import httplib
+try:
+    import http.client as httplib
+except ImportError:
+    import httplib
 
 from tests.unit import unittest
 from boto.sns import connect_to_region

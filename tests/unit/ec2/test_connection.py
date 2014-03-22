@@ -1,5 +1,8 @@
 #!/usr/bin/env python
-import httplib
+try:
+    import http.client as httplib
+except ImportError:
+    import httplib
 
 from datetime import datetime, timedelta
 from mock import MagicMock, Mock, patch

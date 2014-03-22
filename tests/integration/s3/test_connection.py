@@ -33,7 +33,10 @@ try:
     from urllib import parse as urlparse
 except ImportError:
     import urlparse
-import httplib
+try:
+    import http.client as httplib
+except ImportError:
+    import httplib
 from boto.s3.connection import S3Connection
 from boto.s3.bucket import Bucket
 from boto.exception import S3PermissionsError, S3ResponseError

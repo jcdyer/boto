@@ -21,7 +21,10 @@
 
 from __future__ import print_function
 import errno
-import httplib
+try:
+    import http.client as httplib
+except ImportError:
+    import httplib
 import os
 import random
 import re

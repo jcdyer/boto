@@ -2,7 +2,10 @@ try:
     import unittest2 as unittest
 except ImportError:
     import unittest
-import httplib
+try:
+    import http.client as httplib
+except ImportError:
+    import httplib
 
 import mock
 from mock import Mock

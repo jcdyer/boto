@@ -27,7 +27,10 @@ import threading
 import hashlib
 import time
 import logging
-from Queue import Queue, Empty
+try:
+    from queue import Queue, Empty
+except ImportError:
+    from Queue import Queue, Empty
 import binascii
 
 from .utils import DEFAULT_PART_SIZE, minimum_part_size, chunk_hashes, \

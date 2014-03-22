@@ -24,6 +24,10 @@ from boto.sdb.db.key import Key
 from boto.sdb.db.model import Model
 from datetime import datetime
 from xml.dom.minidom import getDOMImplementation, parse, parseString, Node
+try:
+    import http.client as httplib
+except ImportError:
+    import httplib
 
 ISO8601 = '%Y-%m-%dT%H:%M:%SZ'
 
@@ -209,9 +213,9 @@ class XMLManager(object):
     def _connect(self):
         if self.db_host:
             if self.enable_ssl:
-                from httplib import HTTPSConnection as Connection
+                Connection = httplib.HTTPSConnection
             else:
-                from httplib import HTTPConnection as Connection
+                Connection = HTTPConnection
 
             self.connection = Connection(self.db_host, self.db_port)
 

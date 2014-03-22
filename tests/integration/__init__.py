@@ -23,7 +23,6 @@
 """
 Base class to make checking the certs easier.
 """
-import httplib
 import socket
 import unittest
 

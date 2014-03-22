@@ -21,7 +21,10 @@
 # IN THE SOFTWARE.
 #
 import tempfile
-from Queue import Queue
+try:
+    from queue import Queue
+except ImportError:
+    from Queue import Queue
 
 import mock
 from tests.unit import unittest

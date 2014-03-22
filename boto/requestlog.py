@@ -1,7 +1,10 @@
 
 from datetime import datetime
 from threading import Thread
-import Queue
+try:
+    import queue
+except ImportError:
+    import Queue as queue
 
 from boto.utils import RequestHook
 
@@ -12,7 +15,7 @@ class RequestLogger(RequestHook):
     """
     def __init__(self, filename='/tmp/request_log.csv'):
         self.request_log_file = open(filename, 'w')
-        self.request_log_queue = Queue.Queue(100)
+        self.request_log_queue = queue.Queue(100)
         Thread(target=self._request_log_worker).start()
     
 

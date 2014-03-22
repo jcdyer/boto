@@ -47,9 +47,11 @@ from __future__ import with_statement, print_function
 import base64
 from datetime import datetime
 import errno
-import httplib
+try:
+    import http.client as httplib
+except ImportError:
+    import httplib
 import os
-import Queue
 import random
 import re
 import socket
