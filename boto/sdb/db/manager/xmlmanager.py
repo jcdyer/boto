@@ -24,10 +24,8 @@ from boto.sdb.db.key import Key
 from boto.sdb.db.model import Model
 from datetime import datetime
 from xml.dom.minidom import getDOMImplementation, parse, parseString, Node
-try:
-    import http.client as httplib
-except ImportError:
-    import httplib
+from six.moves.urllib.parse import urlencode
+from six.moves import http
 
 ISO8601 = '%Y-%m-%dT%H:%M:%SZ'
 
@@ -213,9 +211,9 @@ class XMLManager(object):
     def _connect(self):
         if self.db_host:
             if self.enable_ssl:
-                Connection = httplib.HTTPSConnection
+                Connection = http.client.HTTPSConnection
             else:
-                Connection = HTTPConnection
+                Connection = http.client.HTTPConnection
 
             self.connection = Connection(self.db_host, self.db_port)
 
@@ -350,8 +348,6 @@ class XMLManager(object):
 
         if not self.connection:
             raise NotImplementedError("Can't query without a database connection")
-
-        from urllib import urlencode
 
         query = str(self._build_query(cls, filters, limit, order_by))
         if query:

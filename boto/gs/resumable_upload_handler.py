@@ -30,10 +30,7 @@ import random
 import re
 import socket
 import time
-try:
-    from urllib import parse as urlparse
-except ImportError:
-    import urlparse
+from six.moves import urllib
 from boto import config, UserAgent
 from boto.connection import AWSAuthConnection
 from boto.exception import InvalidUriError
@@ -150,7 +147,7 @@ class ResumableUploadHandler(object):
 
         Raises InvalidUriError if URI is syntactically invalid.
         """
-        parse_result = urlparse.urlparse(uri)
+        parse_result = urllib.parse.urlparse(uri)
         if (parse_result.scheme.lower() not in ['http', 'https'] or
             not parse_result.netloc):
             raise InvalidUriError('Invalid tracker URI (%s)' % uri)

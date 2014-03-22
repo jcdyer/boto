@@ -38,7 +38,7 @@ except ImportError:
 import base64
 import binascii
 import math
-import urllib
+from six.moves import urllib
 import boto.utils
 from boto.exception import BotoClientError
 from boto.exception import StorageDataError
@@ -1467,7 +1467,7 @@ class Key(object):
         if response_headers:
             for key in response_headers:
                 query_args.append('%s=%s' % (
-                    key, urllib.quote(response_headers[key])))
+                    key, urllib.parse.quote(response_headers[key])))
         query_args = '&'.join(query_args)
         self.open('r', headers, query_args=query_args,
                   override_num_retries=override_num_retries)

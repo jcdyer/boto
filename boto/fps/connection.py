@@ -21,7 +21,7 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
 # IN THE SOFTWARE.
 
-import urllib
+from six.moves import urllib
 import uuid
 from boto.connection import AWSQueryConnection
 from boto.fps.exception import ResponseErrorFactory
@@ -212,7 +212,7 @@ class FPSConnection(AWSQueryConnection):
         kw.setdefault('callerKey', self.aws_access_key_id)
 
         safestr = lambda x: x is not None and str(x) or ''
-        safequote = lambda x: urllib.quote(safestr(x), safe='~')
+        safequote = lambda x: urllib.parse.quote(safestr(x), safe='~')
         payload = sorted([(k, safequote(v)) for k, v in kw.items()])
 
         encoded = lambda p: '&'.join([k + '=' + v for k, v in p])

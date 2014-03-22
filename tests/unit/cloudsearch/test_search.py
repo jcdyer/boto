@@ -3,10 +3,7 @@
 from tests.unit import unittest
 from httpretty import HTTPretty
 
-try:
-    from urllib import parse as urlparse
-except ImportError:
-    import urlparse
+from six.moves import urllib
 import json
 import mock
 import requests
@@ -56,7 +53,7 @@ class CloudSearchSearchBaseTest(unittest.TestCase):
     def get_args(self, requestline):
         (_, request, _) = requestline.split(" ")
         (_, request) = request.split("?", 1)
-        args = urlparse.parse_qs(request)
+        args = urllib.parse.parse_qs(request)
         return args
 
     def setUp(self):

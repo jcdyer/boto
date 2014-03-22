@@ -182,8 +182,8 @@ class TestBuildInstanceMetadataURL(unittest.TestCase):
 
 class TestRetryURL(unittest.TestCase):
     def setUp(self):
-        self.urlopen_patch = mock.patch('urllib2.urlopen')
-        self.opener_patch = mock.patch('urllib2.build_opener')
+        self.urlopen_patch = mock.patch('six.moves.urllib.request.urlopen')
+        self.opener_patch = mock.patch('six.moves.urllib.request.build_opener')
         self.urlopen = self.urlopen_patch.start()
         self.opener = self.opener_patch.start()
 

@@ -28,7 +28,7 @@ Some unit tests for the S3Connection
 from __future__ import print_function
 import time
 import os
-import urllib
+from six.moves import urllib
 
 from boto.s3.connection import S3Connection
 from boto.exception import S3PermissionsError
@@ -68,10 +68,10 @@ def test():
     fp.close()
     # test generated URLs
     url = k.generate_url(3600, headers=DEVPAY_HEADERS)
-    file = urllib.urlopen(url)
+    file = urllib.request.urlopen(url)
     assert s1 == file.read(), 'invalid URL %s' % url
     url = k.generate_url(3600, force_http=True, headers=DEVPAY_HEADERS)
-    file = urllib.urlopen(url)
+    file = urllib.request.urlopen(url)
     assert s1 == file.read(), 'invalid URL %s' % url
     bucket.delete_key(k, headers=DEVPAY_HEADERS)
     # test a few variations on get_all_keys - first load some data

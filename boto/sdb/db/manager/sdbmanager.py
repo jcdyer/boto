@@ -28,6 +28,7 @@ from boto.sdb.db.blob import Blob
 from boto.sdb.db.property import ListProperty, MapProperty
 from datetime import datetime, date, time
 from boto.exception import SDBPersistenceError, S3ResponseError
+from six.moves import urllib
 
 ISO8601 = '%Y-%m-%dT%H:%M:%SZ'
 
@@ -106,7 +107,6 @@ class SDBConverter(object):
         return self.encode_map(prop, values)
 
     def encode_map(self, prop, value):
-        import urllib
         if value is None:
             return None
         if not isinstance(value, dict):
@@ -118,7 +118,7 @@ class SDBConverter(object):
                 item_type = self.model_class
             encoded_value = self.encode(item_type, value[key])
             if encoded_value is not None:
-                new_value.append('%s:%s' % (urllib.quote(key), encoded_value))
+                new_value.append('%s:%s' % (urllib.parse.quote(key), encoded_value))
         return new_value
 
     def encode_prop(self, prop, value):
@@ -158,11 +158,10 @@ class SDBConverter(object):
 
     def decode_map_element(self, item_type, value):
         """Decode a single element for a map"""
-        import urllib
         key = value
         if ":" in value:
             key, value = value.split(':', 1)
-            key = urllib.unquote(key)
+            key = urllib.parse.unquote(key)
         if self.model_class in item_type.mro():
             value = item_type(id=value)
         else:

@@ -20,7 +20,7 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
 # IN THE SOFTWARE.
 import re
-import urllib
+from six.moves import urllib
 import base64
 
 from boto.connection import AWSAuthConnection
@@ -99,7 +99,7 @@ class SESConnection(AWSAuthConnection):
             'POST',
             '/',
             headers=headers,
-            data=urllib.urlencode(params)
+            data=urllib.parse.urlencode(params)
         )
         body = response.read()
         if response.status == 200:

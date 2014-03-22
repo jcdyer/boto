@@ -52,10 +52,10 @@ except ImportError:
         from cStringIO import StringIO
     except ImportError:
         from StringIO import StringIO
-import urllib
 import re
 import base64
 from collections import defaultdict
+from six.moves import urllib
 
 # as per http://goo.gl/BDuud (02/19/2011)
 
@@ -194,7 +194,7 @@ class Bucket(object):
             query_args_l.append('versionId=%s' % version_id)
         if response_headers:
             for rk, rv in response_headers.iteritems():
-                query_args_l.append('%s=%s' % (rk, urllib.quote(rv)))
+                query_args_l.append('%s=%s' % (rk, urllib.parse.quote(rv)))
 
         key, resp = self._get_key_internal(key_name, headers, query_args_l)
         return key
@@ -388,8 +388,8 @@ class Bucket(object):
                 value = value.encode('utf-8')
             if value is not None and value != '':
                 pairs.append('%s=%s' % (
-                    urllib.quote(key),
-                    urllib.quote(str(value)
+                    urllib.parse.quote(key),
+                    urllib.parse.quote(str(value)
                 )))
 
         return '&'.join(pairs)
@@ -857,7 +857,7 @@ class Bucket(object):
             acl = src_bucket.get_xml_acl(src_key_name)
         if encrypt_key:
             headers[provider.server_side_encryption_header] = 'AES256'
-        src = '%s/%s' % (src_bucket_name, urllib.quote(src_key_name))
+        src = '%s/%s' % (src_bucket_name, urllib.parse.quote(src_key_name))
         if src_version_id:
             src += '?versionId=%s' % src_version_id
         headers[provider.copy_source_header] = str(src)

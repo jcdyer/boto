@@ -24,10 +24,7 @@ Represents an SQS Queue
 """
 
 from __future__ import print_function
-try:
-    from urllib import parse as urlparse
-except ImportError:
-    import urlparse
+from six.moves.urllib.parse import urlparse
 from boto.sqs.message import Message
 
 
@@ -44,7 +41,7 @@ class Queue(object):
 
     def _id(self):
         if self.url:
-            val = urlparse.urlparse(self.url)[2]
+            val = urlparse(self.url)[2]
         else:
             val = self.url
         return val
@@ -52,7 +49,7 @@ class Queue(object):
 
     def _name(self):
         if self.url:
-            val = urlparse.urlparse(self.url)[2].split('/')[2]
+            val = urlparse(self.url)[2].split('/')[2]
         else:
             val = self.url
         return  val

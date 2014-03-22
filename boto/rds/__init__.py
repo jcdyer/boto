@@ -20,7 +20,7 @@
 # IN THE SOFTWARE.
 #
 
-import urllib
+from six.moves import urllib
 from boto.connection import AWSQueryConnection
 from boto.rds.dbinstance import DBInstance
 from boto.rds.dbsecuritygroup import DBSecurityGroup
@@ -990,7 +990,7 @@ class RDSConnection(AWSQueryConnection):
         if ec2_security_group_owner_id:
             params['EC2SecurityGroupOwnerId'] = ec2_security_group_owner_id
         if cidr_ip:
-            params['CIDRIP'] = urllib.quote(cidr_ip)
+            params['CIDRIP'] = urllib.parse.quote(cidr_ip)
         return self.get_object('AuthorizeDBSecurityGroupIngress', params,
                                DBSecurityGroup)
 

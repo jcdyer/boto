@@ -20,7 +20,7 @@
 # IN THE SOFTWARE.
 
 import re
-import urllib
+from six.moves import urllib
 import xml.sax
 
 import boto
@@ -101,7 +101,7 @@ class Bucket(S3Bucket):
             query_args_l.append('generation=%s' % generation)
         if response_headers:
             for rk, rv in response_headers.iteritems():
-                query_args_l.append('%s=%s' % (rk, urllib.quote(rv)))
+                query_args_l.append('%s=%s' % (rk, urllib.parse.quote(rv)))
         try:
             key, resp = self._get_key_internal(key_name, headers,
                                                query_args_l=query_args_l)

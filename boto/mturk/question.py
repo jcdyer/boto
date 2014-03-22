@@ -51,8 +51,8 @@ try:
     class ValidatingXML(object):
 
         def validate(self):
-            import urllib2
-            schema_src_file = urllib2.urlopen(self.schema_url)
+            from six.moves import urllib
+            schema_src_file = urllib.request.urlopen(self.schema_url)
             schema_doc = etree.parse(schema_src_file)
             schema = etree.XMLSchema(schema_doc)
             doc = etree.fromstring(self.get_as_xml())

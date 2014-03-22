@@ -26,7 +26,7 @@
 
 import exception
 import random
-import urllib
+from six.moves import urllib
 import uuid
 import xml.sax
 
@@ -82,7 +82,7 @@ class Route53Connection(AWSAuthConnection):
             for key, val in params.iteritems():
                 if val is None:
                     continue
-                pairs.append(key + '=' + urllib.quote(str(val)))
+                pairs.append(key + '=' + urllib.parse.quote(str(val)))
             path += '?' + '&'.join(pairs)
         return super(Route53Connection, self).make_request(action, path,
                                               headers, data,

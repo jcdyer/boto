@@ -28,15 +28,8 @@ from __future__ import print_function
 import unittest
 import time
 import os
-import urllib
-try:
-    from urllib import parse as urlparse
-except ImportError:
-    import urlparse
-try:
-    import http.client as httplib
-except ImportError:
-    import httplib
+from six.moves import urllib
+from six.moves import http
 from boto.s3.connection import S3Connection
 from boto.s3.bucket import Bucket
 from boto.exception import S3PermissionsError, S3ResponseError
@@ -73,27 +66,27 @@ class S3ConnectionTest (unittest.TestCase):
         fp.close()
         # test generated URLs
         url = k.generate_url(3600)
-        file = urllib.urlopen(url)
+        file = urllib.request.urlopen(url)
         assert s1 == file.read(), 'invalid URL %s' % url
         url = k.generate_url(3600, force_http=True)
-        file = urllib.urlopen(url)
+        file = urllib.request.urlopen(url)
         assert s1 == file.read(), 'invalid URL %s' % url
         url = k.generate_url(3600, force_http=True, headers={'x-amz-x-token' : 'XYZ'})
-        file = urllib.urlopen(url)
+        file = urllib.request.urlopen(url)
         assert s1 == file.read(), 'invalid URL %s' % url
         rh = {'response-content-disposition': 'attachment; filename="foo.txt"'}
         url = k.generate_url(60, response_headers=rh)
-        file = urllib.urlopen(url)
+        file = urllib.request.urlopen(url)
         assert s1 == file.read(), 'invalid URL %s' % url
         #test whether amperands and to-be-escaped characters work in header filename
         rh = {'response-content-disposition': 'attachment; filename="foo&z%20ar&ar&zar&bar.txt"'}
         url = k.generate_url(60, response_headers=rh, force_http=True)
-        file = urllib.urlopen(url)
+        file = urllib.request.urlopen(url)
         assert s1 == file.read(), 'invalid URL %s' % url
         # overwrite foobar contents with a PUT
         url = k.generate_url(3600, 'PUT', force_http=True, policy='private', reduced_redundancy=True)
-        up = urlparse.urlsplit(url)
-        con = httplib.HTTPConnection(up.hostname, up.port)
+        up = urllib.parse.urlsplit(url)
+        con = http.client.HTTPConnection(up.hostname, up.port)
         con.request("PUT", up.path + '?' + up.query, body="hello there")
         resp = con.getresponse()
         assert 200 == resp.status

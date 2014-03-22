@@ -41,8 +41,7 @@ Some handy utility functions used by several classes.
 
 from __future__ import print_function
 import socket
-import urllib
-import urllib2
+from six.moves import urllib
 import imp
 import subprocess
 try:
@@ -118,7 +117,7 @@ def unquote_v(nv):
     if len(nv) == 1:
         return nv
     else:
-        return (nv[0], urllib.unquote(nv[1]))
+        return (nv[0], urllib.parse.unquote(nv[1]))
 
 
 def canonical_string(method, path, headers, expires=None,
@@ -202,7 +201,7 @@ def get_aws_metadata(headers, provider=None):
     metadata = {}
     for hkey in headers.keys():
         if hkey.lower().startswith(metadata_prefix):
-            val = urllib.unquote(headers[hkey])
+            val = urllib.parse.unquote(headers[hkey])
             try:
                 metadata[hkey[len(metadata_prefix):]] = unicode(val, 'utf-8')
             except UnicodeDecodeError:
@@ -220,13 +219,13 @@ def retry_url(url, retry_on_404=True, num_retries=10):
     """
     for i in range(0, num_retries):
         try:
-            proxy_handler = urllib2.ProxyHandler({})
-            opener = urllib2.build_opener(proxy_handler)
-            req = urllib2.Request(url)
+            proxy_handler = urllib.request.ProxyHandler({})
+            opener = urllib.request.build_opener(proxy_handler)
+            req = urllib.request.Request(url)
             r = opener.open(req)
             result = r.read()
             return result
-        except urllib2.HTTPError as e:
+        except urllib.error.HTTPError as e:
             # in 2.6 you use getcode(), in 2.5 and earlier you use code
             if hasattr(e, 'getcode'):
                 code = e.getcode()
@@ -291,7 +290,7 @@ class LazyLoadMetadata(dict):
             for i in range(0, self._num_retries):
                 try:
                     val = boto.utils.retry_url(
-                        self._url + urllib.quote(resource,
+                        self._url + urllib.parse.quote(resource,
                                                  safe="/:"),
                         num_retries=self._num_retries)
                     if val and val[0] == '{':
@@ -402,7 +401,7 @@ def get_instance_metadata(version='latest', url='http://169.254.169.254',
     try:
         metadata_url = _build_instance_metadata_url(url, version, data)
         return _get_instance_metadata(metadata_url, num_retries=num_retries)
-    except urllib2.URLError as e:
+    except urllib.error.URLError as e:
         return None
     finally:
         if timeout is not None:
@@ -430,7 +429,7 @@ def get_instance_identity(version='latest', url='http://169.254.169.254',
             if field:
                 iid[field] = val
         return iid
-    except urllib2.URLError as e:
+    except urllib.error.URLError as e:
         return None
     finally:
         if timeout is not None:
@@ -498,7 +497,7 @@ def update_dme(username, password, dme_id, ip_address):
     """
     dme_url = 'https://www.dnsmadeeasy.com/servlet/updateip'
     dme_url += '?username=%s&password=%s&id=%s&ip=%s'
-    s = urllib2.urlopen(dme_url % (username, password, dme_id, ip_address))
+    s = urllib.request.urlopen(dme_url % (username, password, dme_id, ip_address))
     return s.read()
 
 
@@ -522,12 +521,12 @@ def fetch_file(uri, file=None, username=None, password=None):
             key.get_contents_to_file(file)
         else:
             if username and password:
-                passman = urllib2.HTTPPasswordMgrWithDefaultRealm()
+                passman = urllib.request.HTTPPasswordMgrWithDefaultRealm()
                 passman.add_password(None, uri, username, password)
-                authhandler = urllib2.HTTPBasicAuthHandler(passman)
-                opener = urllib2.build_opener(authhandler)
-                urllib2.install_opener(opener)
-            s = urllib2.urlopen(uri)
+                authhandler = urllib.request.HTTPBasicAuthHandler(passman)
+                opener = urllib.request.build_opener(authhandler)
+                urllib.request.install_opener(opener)
+            s = urllib.request.urlopen(uri)
             file.write(s.read())
         file.seek(0)
     except:

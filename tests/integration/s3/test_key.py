@@ -34,7 +34,7 @@ except ImportError:
         from cString import StringIO
     except ImportError:
         from StringIO import StringIO
-import urllib
+from six.moves import urllib
 from boto.s3.connection import S3Connection
 from boto.s3.key import Key
 from boto.exception import S3ResponseError
@@ -417,6 +417,6 @@ class S3KeyTest(unittest.TestCase):
         self.assertEqual(check.get_metadata('test-plus'), 'A plus (+)')
         self.assertEqual(check.content_disposition, 'filename=Sch%C3%B6ne%20Zeit.txt')
         self.assertEqual(
-            urllib.unquote(check.content_disposition).decode('utf-8'),
+            urllib.parse.unquote(check.content_disposition).decode('utf-8'),
             'filename=Schöne Zeit.txt'.decode('utf-8')
         )

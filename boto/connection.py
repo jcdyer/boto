@@ -57,11 +57,7 @@ import re
 import socket
 import sys
 import time
-import urllib
-try:
-    from urllib import parse as urlparse
-except ImportError:
-    import urlparse
+from six.moves import urllib
 import xml.sax
 import copy
 
@@ -379,7 +375,7 @@ class HTTPRequest(object):
             val = self.headers[key]
             if isinstance(val, unicode):
                 safe = '!"#$%&\'()*+,/:;<=>?@[\\]^`{|}~'
-                self.headers[key] = urllib.quote(val.encode('utf-8'), safe)
+                self.headers[key] = urllib.parse.quote(val.encode('utf-8'), safe)
 
         connection._auth_handler.add_auth(self, **kwargs)
 
@@ -964,7 +960,7 @@ class AWSAuthConnection(object):
                     return response
                 else:
                     scheme, request.host, request.path, \
-                        params, query, fragment = urlparse.urlparse(location)
+                        params, query, fragment = urllib.parse.urlparse(location)
                     if query:
                         request.path += '?' + query
                     # urlparse can return both host and port in netloc, so if
