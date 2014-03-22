@@ -1,7 +1,10 @@
 from __future__ import print_function
 
 import os
-import urlparse
+try:
+    from urllib import parse as urlparse
+except ImportError:
+    import urlparse
 import boto
 import boto.connection
 import boto.jsonresponse

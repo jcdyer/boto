@@ -4,7 +4,10 @@ from tests.unit import unittest
 from httpretty import HTTPretty
 from mock import MagicMock
 
-import urlparse
+try:
+    from urllib import parse as urlparse
+except ImportError:
+    import urlparse
 import json
 
 from boto.cloudsearch.document import DocumentServiceConnection

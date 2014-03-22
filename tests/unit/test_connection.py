@@ -22,7 +22,10 @@
 from __future__ import with_statement
 
 import os
-import urlparse
+try:
+    from urllib import parse as urlparse
+except ImportError:
+    import urlparse
 from tests.unit import unittest
 from httpretty import HTTPretty
 

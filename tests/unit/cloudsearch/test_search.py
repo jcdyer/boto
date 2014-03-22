@@ -3,7 +3,10 @@
 from tests.unit import unittest
 from httpretty import HTTPretty
 
-import urlparse
+try:
+    from urllib import parse as urlparse
+except ImportError:
+    import urlparse
 import json
 import mock
 import requests

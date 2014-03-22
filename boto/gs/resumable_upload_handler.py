@@ -27,7 +27,10 @@ import random
 import re
 import socket
 import time
-import urlparse
+try:
+    from urllib import parse as urlparse
+except ImportError:
+    import urlparse
 from boto import config, UserAgent
 from boto.connection import AWSAuthConnection
 from boto.exception import InvalidUriError

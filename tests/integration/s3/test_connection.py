@@ -29,7 +29,10 @@ import unittest
 import time
 import os
 import urllib
-import urlparse
+try:
+    from urllib import parse as urlparse
+except ImportError:
+    import urlparse
 import httplib
 from boto.s3.connection import S3Connection
 from boto.s3.bucket import Bucket

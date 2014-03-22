@@ -56,7 +56,10 @@ import socket
 import sys
 import time
 import urllib
-import urlparse
+try:
+    from urllib import parse as urlparse
+except ImportError:
+    import urlparse
 import xml.sax
 import copy
 

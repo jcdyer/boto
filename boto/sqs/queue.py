@@ -24,7 +24,10 @@ Represents an SQS Queue
 """
 
 from __future__ import print_function
-import urlparse
+try:
+    from urllib import parse as urlparse
+except ImportError:
+    import urlparse
 from boto.sqs.message import Message
 
 

@@ -5,8 +5,10 @@ adapted for Github.
 (https://bitbucket.org/dhellmann/sphinxcontrib-bitbucket/)
 
 """
-from urlparse import urljoin
-
+try:
+    from urllib.parse import urljoin
+except ImportError:
+    from urlparse import urljoin
 from docutils import nodes, utils
 from docutils.parsers.rst.roles import set_classes
 
