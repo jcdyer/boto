@@ -19,7 +19,14 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
 # IN THE SOFTWARE.
 
-import StringIO
+try:
+    from io import StringIO
+except ImportError:
+    try:
+        from cString import StringIO
+    except ImportError:
+        from StringIO import StringIO
+
 import xml.sax
 
 class XmlHandler(xml.sax.ContentHandler):
@@ -55,4 +62,4 @@ class XmlHandlerWrapper(object):
         self.parser.setFeature(xml.sax.handler.feature_external_ges, 0)
 
     def parseString(self, content):
-        return self.parser.parse(StringIO.StringIO(content))
+        return self.parser.parse(StringIO(content))

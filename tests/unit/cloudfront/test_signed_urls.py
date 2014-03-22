@@ -4,7 +4,13 @@ try:
     import simplejson as json
 except ImportError:
     import json
-from cStringIO import StringIO
+try:
+    from io import StringIO
+except ImportError:
+    try:
+        from cString import StringIO
+    except ImportError:
+        from StringIO import StringIO
 from textwrap import dedent
 
 from boto.cloudfront.distribution import Distribution

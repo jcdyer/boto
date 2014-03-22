@@ -45,7 +45,13 @@ import boto.jsonresponse
 import boto.utils
 import xml.sax
 import xml.sax.saxutils
-import StringIO
+try:
+    from io import StringIO
+except ImportError:
+    try:
+        from cStringIO import StringIO
+    except ImportError:
+        from StringIO import StringIO
 import urllib
 import re
 import base64
@@ -701,7 +707,7 @@ class Bucket(object):
             if count <= 0:
                 return False  # no more
             data = data.encode('utf-8')
-            fp = StringIO.StringIO(data)
+            fp = StringIO(data)
             md5 = boto.utils.compute_md5(fp)
             hdrs['Content-MD5'] = md5[1]
             hdrs['Content-Type'] = 'text/xml'
@@ -1327,7 +1333,7 @@ class Bucket(object):
         """
         xml = lifecycle_config.to_xml()
         xml = xml.encode('utf-8')
-        fp = StringIO.StringIO(xml)
+        fp = StringIO(xml)
         md5 = boto.utils.compute_md5(fp)
         if headers is None:
             headers = {}
@@ -1591,7 +1597,7 @@ class Bucket(object):
             CORS configuration.  See the S3 documentation for details
             of the exact syntax required.
         """
-        fp = StringIO.StringIO(cors_xml)
+        fp = StringIO(cors_xml)
         md5 = boto.utils.compute_md5(fp)
         if headers is None:
             headers = {}
@@ -1818,7 +1824,7 @@ class Bucket(object):
     def set_xml_tags(self, tag_str, headers=None, query_args='tagging'):
         if headers is None:
             headers = {}
-        md5 = boto.utils.compute_md5(StringIO.StringIO(tag_str))
+        md5 = boto.utils.compute_md5(StringIO(tag_str))
         headers['Content-MD5'] = md5[1]
         headers['Content-Type'] = 'text/xml'
         response = self.connection.make_request('PUT', self.name,

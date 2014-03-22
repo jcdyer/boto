@@ -45,7 +45,13 @@ import urllib
 import urllib2
 import imp
 import subprocess
-import StringIO
+try:
+    from io import StringIO
+except ImportError:
+    try:
+        from cString import StringIO
+    except ImportError:
+        from StringIO import StringIO
 import time
 import logging.handlers
 import boto
@@ -536,7 +542,7 @@ class ShellCommand(object):
     def __init__(self, command, wait=True, fail_fast=False, cwd=None):
         self.exit_code = 0
         self.command = command
-        self.log_fp = StringIO.StringIO()
+        self.log_fp = StringIO()
         self.wait = wait
         self.fail_fast = fail_fast
         self.run(cwd=cwd)
@@ -913,7 +919,7 @@ def write_mime_multipart(content, compress=False, deftype='text/plain', delimite
     rcontent = wrapper.as_string()
 
     if compress:
-        buf = StringIO.StringIO()
+        buf = StringIO()
         gz = gzip.GzipFile(mode='wb', fileobj=buf)
         try:
             gz.write(rcontent)

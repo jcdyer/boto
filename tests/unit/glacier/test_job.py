@@ -19,7 +19,13 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
 # IN THE SOFTWARE.
 #
-from StringIO import StringIO
+try:
+    from io import StringIO
+except ImportError:
+    try:
+        from cString import StringIO
+    except ImportError:
+        from StringIO import StringIO
 from tests.unit import unittest
 import mock
 

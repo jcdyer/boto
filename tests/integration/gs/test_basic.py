@@ -30,7 +30,13 @@ Some integration tests for the GSConnection
 
 import os
 import re
-import StringIO
+try:
+    from io import StringIO
+except ImportError:
+    try:
+        from cString import StringIO
+    except ImportError:
+        from StringIO import StringIO
 import urllib
 import xml.sax
 
@@ -106,10 +112,10 @@ class GSBasicTest(GSTestCase):
         self.assertEqual(s1, f.read())
         f.close()
         # check to make sure set_contents_from_file is working
-        sfp = StringIO.StringIO('foo')
+        sfp = StringIO('foo')
         k.set_contents_from_file(sfp)
         self.assertEqual(k.get_contents_as_string(), 'foo')
-        sfp2 = StringIO.StringIO('foo2')
+        sfp2 = StringIO('foo2')
         k.set_contents_from_file(sfp2)
         self.assertEqual(k.get_contents_as_string(), 'foo2')
 

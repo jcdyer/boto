@@ -23,7 +23,13 @@
 
 from __future__ import print_function
 import os, re
-from io import StringIO
+try:
+    from io import StringIO
+except ImportError:
+    try:
+        from cString import StringIO
+    except ImportError:
+        from StringIO import StringIO
 import warnings
 try:
     import configparser
@@ -84,7 +90,7 @@ class Config(configparser.SafeConfigParser):
 
     def load_credential_file(self, path):
         """Load a credential file as is setup like the Java utilities"""
-        c_data = StringIO.StringIO()
+        c_data = StringIO()
         c_data.write("[Credentials]\n")
         for line in open(path, "r").readlines():
             c_data.write(line.replace("AWSAccessKeyId", "aws_access_key_id").replace("AWSSecretKey", "aws_secret_access_key"))
@@ -188,13 +194,13 @@ class Config(configparser.SafeConfigParser):
             self.set(section, name, 'false')
 
     def dump(self):
-        s = StringIO.StringIO()
+        s = StringIO()
         self.write(s)
         print(s.getvalue())
 
     def dump_safe(self, fp=None):
         if not fp:
-            fp = StringIO.StringIO()
+            fp = StringIO()
         for section in self.sections():
             fp.write('[%s]\n' % section)
             for option in self.options(section):

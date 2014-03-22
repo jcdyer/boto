@@ -23,7 +23,13 @@
 
 """Integration tests for GS versioning support."""
 
-import StringIO
+try:
+    from io import StringIO
+except ImportError:
+    try:
+        from cString import StringIO
+    except ImportError:
+        from StringIO import StringIO
 import os
 import tempfile
 from xml import sax
@@ -44,20 +50,20 @@ class GSGenerationConditionalsTest(GSTestCase):
         b = self._MakeBucket()
         k = b.new_key("foo")
         s1 = "test1"
-        fp = StringIO.StringIO(s1)
+        fp = StringIO(s1)
         with self.assertRaisesRegexp(GSResponseError, VERSION_MISMATCH):
             k.set_contents_from_file(fp, if_generation=999)
 
-        fp = StringIO.StringIO(s1)
+        fp = StringIO(s1)
         k.set_contents_from_file(fp, if_generation=0)
         g1 = k.generation
 
         s2 = "test2"
-        fp = StringIO.StringIO(s2)
+        fp = StringIO(s2)
         with self.assertRaisesRegexp(GSResponseError, VERSION_MISMATCH):
             k.set_contents_from_file(fp, if_generation=int(g1)+1)
 
-        fp = StringIO.StringIO(s2)
+        fp = StringIO(s2)
         k.set_contents_from_file(fp, if_generation=g1)
         self.assertEqual(k.get_contents_as_string(), s2)
 
@@ -156,21 +162,21 @@ class GSGenerationConditionalsTest(GSTestCase):
         b = self._MakeBucket()
         k = b.new_key("foo")
         s1 = "test1"
-        fp = StringIO.StringIO(s1)
+        fp = StringIO(s1)
         with self.assertRaisesRegexp(GSResponseError, VERSION_MISMATCH):
             k.set_contents_from_stream(fp, if_generation=999)
 
-        fp = StringIO.StringIO(s1)
+        fp = StringIO(s1)
         k.set_contents_from_stream(fp, if_generation=0)
         g1 = k.generation
 
         k = b.get_key("foo")
         s2 = "test2"
-        fp = StringIO.StringIO(s2)
+        fp = StringIO(s2)
         with self.assertRaisesRegexp(GSResponseError, VERSION_MISMATCH):
             k.set_contents_from_stream(fp, if_generation=int(g1)+1)
 
-        fp = StringIO.StringIO(s2)
+        fp = StringIO(s2)
         k.set_contents_from_stream(fp, if_generation=g1)
         self.assertEqual(k.get_contents_as_string(), s2)
 

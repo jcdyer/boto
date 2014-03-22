@@ -29,7 +29,13 @@ from __future__ import with_statement
 import time
 from threading import Timer
 from tests.unit import unittest
-import StringIO
+try:
+    from io import StringIO
+except ImportError:
+    try:
+        from cString import StringIO
+    except ImportError:
+        from StringIO import StringIO
 
 import boto
 from boto.sqs.bigmessage import BigMessage
@@ -58,7 +64,7 @@ class TestBigMessage(unittest.TestCase):
 
         # now add a message
         msg_body = 'This is a test of the big message'
-        fp = StringIO.StringIO(msg_body)
+        fp = StringIO(msg_body)
         s3_url = 's3://%s' % queue_name
         message = queue.new_message(fp, s3_url=s3_url)
         

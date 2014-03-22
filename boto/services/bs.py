@@ -26,7 +26,15 @@ from boto.services.servicedef import ServiceDef
 from boto.services.submit import Submitter
 from boto.services.result import ResultProcessor
 import boto
-import sys, os, StringIO
+import sys, os
+try:
+    from io import StringIO
+except ImportError:
+    try:
+        from cString import StringIO
+    except ImportError:
+        from StringIO import StringIO
+
 
 class BS(object):
 
@@ -113,7 +121,7 @@ class BS(object):
             self.sd.add_section('Credentials')
             self.sd.set('Credentials', 'aws_access_key_id', ec2.aws_access_key_id)
             self.sd.set('Credentials', 'aws_secret_access_key', ec2.aws_secret_access_key)
-        s = StringIO.StringIO()
+        s = StringIO()
         self.sd.write(s)
         rs = ec2.get_all_images([ami_id])
         img = rs[0]

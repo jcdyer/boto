@@ -21,7 +21,15 @@
 #
 import boto
 from boto.pyami.scriptbase import ScriptBase
-import os, StringIO
+import os
+try:
+    from io import StringIO
+except ImportError:
+    try:
+        from cString import StringIO
+    except ImportError:
+        from StringIO import StringIO
+
 
 class CopyBot(ScriptBase):
 
@@ -82,7 +90,7 @@ class CopyBot(ScriptBase):
         key.set_contents_from_filename(self.log_path)
 
     def main(self):
-        fp = StringIO.StringIO()
+        fp = StringIO()
         boto.config.dump_safe(fp)
         self.notify('%s (%s) Starting' % (self.name, self.instance_id), fp.getvalue())
         if self.src and self.dst:

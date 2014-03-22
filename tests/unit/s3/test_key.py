@@ -23,9 +23,12 @@
 from __future__ import with_statement
 
 try:
-    from cStringIO import StringIO
+    from io import StringIO
 except ImportError:
-    from StringIO import StringIO
+    try:
+        from cStringIO import StringIO
+    except ImportError:
+        from StringIO import StringIO
 
 import mock
 from tests.unit import unittest

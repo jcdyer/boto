@@ -31,7 +31,13 @@ from boto.mashups.interactive import interactive_shell
 from boto.sdb.db.model import Model
 from boto.sdb.db.property import StringProperty
 import os
-import StringIO
+try:
+    from io import StringIO
+except ImportError:
+    try:
+        from cString import StringIO
+    except ImportError:
+        from StringIO import StringIO
 
 
 class ServerSet(list):
@@ -229,7 +235,7 @@ class Server(Model):
             self._config.set('Pyami', 'server_sdb_domain', self._manager.domain.name)
             self._config.set("Pyami", 'server_sdb_name', self.name)
 
-        cfg = StringIO.StringIO()
+        cfg = StringIO()
         self._config.write(cfg)
         cfg = cfg.getvalue()
         r = ami.run(min_count=1,

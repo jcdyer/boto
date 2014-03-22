@@ -19,6 +19,14 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
 # IN THE SOFTWARE.
 
+try:
+    from io import StringIO
+except ImportError:
+    try:
+        from cString import StringIO
+    except ImportError:
+        from StringIO import StringIO
+
 
 class Blob(object):
     """Blob object"""
@@ -29,7 +37,6 @@ class Blob(object):
 
     @property
     def file(self):
-        from StringIO import StringIO
         if self._file:
             f = self._file
         else:

@@ -21,7 +21,13 @@
 #
 from hashlib import sha256
 import itertools
-from StringIO import StringIO
+try:
+    from io import StringIO
+except ImportError:
+    try:
+        from cString import StringIO
+    except ImportError:
+        from StringIO import StringIO
 
 from tests.unit import unittest
 from mock import (

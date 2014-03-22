@@ -28,7 +28,13 @@ import mimetypes
 import os
 import re
 import rfc822
-import StringIO
+try:
+    from io import StringIO
+except ImportError:
+    try:
+        from cStringIO import StringIO
+    except ImportError:
+        from StringIO import StringIO
 import base64
 import binascii
 import math
@@ -1373,7 +1379,7 @@ class Key(object):
         """
         if isinstance(string_data, unicode):
             string_data = string_data.encode("utf-8")
-        fp = StringIO.StringIO(string_data)
+        fp = StringIO(string_data)
         r = self.set_contents_from_file(fp, headers, replace, cb, num_cb,
                                         policy, md5, reduced_redundancy,
                                         encrypt_key=encrypt_key)
@@ -1724,7 +1730,7 @@ class Key(object):
         :rtype: string
         :returns: The contents of the file as a string
         """
-        fp = StringIO.StringIO()
+        fp = StringIO()
         self.get_contents_to_file(fp, headers, cb, num_cb, torrent=torrent,
                                   version_id=version_id,
                                   response_headers=response_headers)

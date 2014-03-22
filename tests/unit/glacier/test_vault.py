@@ -21,7 +21,13 @@
 # IN THE SOFTWARE.
 #
 import unittest
-from cStringIO import StringIO
+try:
+    from io import StringIO
+except ImportError:
+    try:
+        from cString import StringIO
+    except ImportError:
+        from StringIO import StringIO
 
 import mock
 from mock import ANY

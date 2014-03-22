@@ -22,7 +22,13 @@
 
 import xml.sax
 import cgi
-from StringIO import StringIO
+try:
+    from io import StringIO
+except ImportError:
+    try:
+        from cString import StringIO
+    except ImportError:
+        from StringIO import StringIO
 
 class ResponseGroup(xml.sax.ContentHandler):
     """A Generic "Response Group", which can

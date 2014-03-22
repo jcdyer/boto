@@ -25,7 +25,14 @@ import boto
 import os
 import time
 import shutil
-import StringIO
+try:
+    from io import StringIO
+except ImportError:
+    try:
+        from cString import StringIO
+    except ImportError:
+        from StringIO import StringIO
+
 import paramiko
 import socket
 import subprocess
@@ -181,7 +188,7 @@ class LocalClient(object):
 
     def run(self):
         boto.log.info('running:%s' % self.command)
-        log_fp = StringIO.StringIO()
+        log_fp = StringIO()
         process = subprocess.Popen(self.command, shell=True, stdin=subprocess.PIPE,
                                    stdout=subprocess.PIPE, stderr=subprocess.PIPE)
         while process.poll() is None:

@@ -22,7 +22,14 @@
 
 # File representation of key, for use with "file://" URIs.
 
-import os, shutil, StringIO
+import os, shutil
+try:
+    from io import StringIO
+except ImportError:
+    try:
+        from cString import StringIO
+    except ImportError:
+        from StringIO import StringIO
 import sys
 
 class Key(object):
@@ -182,7 +189,7 @@ class Key(object):
         :returns: The contents of the file as a string
         """
 
-        fp = StringIO.StringIO()
+        fp = StringIO()
         self.get_contents_to_file(fp)
         return fp.getvalue()
 
