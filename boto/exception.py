@@ -30,6 +30,16 @@ from boto import handler
 from boto.compat import json
 from boto.resultset import ResultSet
 
+# StandardError does not exist in python3.  Exceptions
+# should inherit from Exception instead in both python2
+# and python3, according to 
+# http://docs.python.org/2/library/exceptions.html#exceptions.Exception
+# but for backwards compatibility for dependent libraries that
+# might try to catch StandardError, we create a workaround
+try:
+    StandardError 
+except NameError:
+    StandardError = Exception
 
 class BotoClientError(StandardError):
     """
@@ -103,7 +113,7 @@ class BotoServerError(StandardError):
                 try:
                     h = handler.XmlHandlerWrapper(self, self)
                     h.parseString(self.body)
-                except (TypeError, xml.sax.SAXParseException), pe:
+                except (TypeError, xml.sax.SAXParseException) as pe:
                     # What if it's JSON? Let's try that.
                     try:
                         parsed = json.loads(self.body)
