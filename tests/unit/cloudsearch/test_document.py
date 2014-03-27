@@ -176,7 +176,7 @@ class CloudSearchDocumentDelete(CloudSearchDocumentTest):
             endpoint="doc-demo-userdomain.us-east-1.cloudsearch.amazonaws.com")
         document.delete("5", "10")
         document.commit()
-        args = json.loads(HTTPretty.last_request.body)[0]
+        args = json.loads(HTTPretty.last_request.body.decode('utf-8'))[0]
 
         self.assertEqual(args['version'], '10')
         self.assertEqual(args['type'], 'delete')
@@ -209,7 +209,7 @@ class CloudSearchDocumentDeleteMultiple(CloudSearchDocumentTest):
         document.delete("5", "10")
         document.delete("6", "11")
         document.commit()
-        args = json.loads(HTTPretty.last_request.body)
+        args = json.loads(HTTPretty.last_request.body.decode('utf-8'))
 
         self.assertEqual(len(args), 2)
         for arg in args:

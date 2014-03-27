@@ -6,7 +6,7 @@ import boto.handler
 import boto.resultset
 import boto.cloudformation
 
-SAMPLE_XML = ur"""
+SAMPLE_XML = u"""
 <DescribeStacksResponse xmlns="http://cloudformation.amazonaws.com/doc/2010-05-15/">
   <DescribeStacksResult>
     <Stacks>
@@ -52,7 +52,7 @@ SAMPLE_XML = ur"""
 </DescribeStacksResponse>
 """
 
-DESCRIBE_STACK_RESOURCE_XML = ur"""
+DESCRIBE_STACK_RESOURCE_XML = u"""
 <DescribeStackResourcesResult>
   <StackResources>
     <member>
@@ -77,7 +77,7 @@ DESCRIBE_STACK_RESOURCE_XML = ur"""
 </DescribeStackResourcesResult>
 """
 
-LIST_STACKS_XML = ur"""
+LIST_STACKS_XML = u"""
 <ListStacksResponse>
  <ListStacksResult>
   <StackSummaries>
@@ -109,7 +109,7 @@ LIST_STACKS_XML = ur"""
 </ListStacksResponse>
 """
 
-LIST_STACK_RESOURCES_XML = r"""
+LIST_STACK_RESOURCES_XML = u"""
 <ListStackResourcesResponse>
   <ListStackResourcesResult>
     <StackResourceSummaries>

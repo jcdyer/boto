@@ -23,7 +23,8 @@
 Defines an interface which all Auth handlers need to implement.
 """
 
-from plugin import Plugin
+from __future__ import absolute_import
+from .plugin import Plugin
 
 class NotReadyToAuthenticate(Exception):
   pass

@@ -43,7 +43,7 @@
 Handles basic connections to AWS
 """
 
-from __future__ import with_statement, print_function
+from __future__ import absolute_import, with_statement, print_function
 import base64
 from datetime import datetime
 import errno
@@ -62,8 +62,8 @@ import time
 import xml.sax
 import copy
 
-import auth
-import auth_handler
+from . import auth
+from . import auth_handler
 import boto
 import boto.utils
 import boto.handler

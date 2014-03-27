@@ -21,7 +21,7 @@
 # IN THE SOFTWARE.
 
 import xml.sax
-import utils
+from . import utils
 
 class XmlHandler(xml.sax.ContentHandler):
 
@@ -49,8 +49,7 @@ class XmlHandler(xml.sax.ContentHandler):
         self.current_text += content
 
     def parse(self, s):
-        xml.sax.parseString(s, self)
-        
+        xml.sax.parseString(s.encode('utf-8'), self) 
 class Element(dict):
 
     def __init__(self, connection=None, element_name=None,

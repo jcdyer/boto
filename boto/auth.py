@@ -84,12 +84,12 @@ class HmacKeys(object):
             digestmod = sha256
         else:
             digestmod = sha
-        return hmac.new(self._provider.secret_key,
+        return hmac.new(self._provider.secret_key.encode('utf-8'),
                         digestmod=digestmod)
 
     def sign_string(self, string_to_sign):
         new_hmac = self._get_hmac()
-        new_hmac.update(string_to_sign)
+        new_hmac.update(string_to_sign.encode('utf-8'))
         return base64.encodestring(new_hmac.digest()).strip()
 
     def __getstate__(self):

@@ -20,7 +20,8 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
 # IN THE SOFTWARE.
 
-from identity import OriginAccessIdentity
+from __future__ import absolute_import 
+from .identity import OriginAccessIdentity
 
 def get_oai_value(origin_access_identity):
     if isinstance(origin_access_identity, OriginAccessIdentity):
